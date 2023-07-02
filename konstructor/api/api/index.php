@@ -106,7 +106,7 @@ if ($method === 'GET') {
         echo "\n ================= \n";
         echo $doc->toJson(); // превращает файл в json
         echo "\n ================= \n";
-        echo $doc->insertData(); // заполняетв DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
+        echo $doc->insertData(); // заполняет в DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
         echo "\n ================= \n";
     }
     //СОЗДАНИЕ РПД
