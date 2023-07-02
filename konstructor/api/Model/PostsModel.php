@@ -265,6 +265,8 @@ class PostsModel extends Database
      */
     public function createRpd()
     {
+        echo "Пыдр_first";
+
         $jsonCursSession = $this->getCursAndSession();
         $arrayCursSession = json_decode($jsonCursSession,true );
 
@@ -300,7 +302,7 @@ class PostsModel extends Database
 
 
             //----
-            //----LIST
+            //----listsogltable
             //----
 
             $protocol = $arrayList[0]['rasmotr'];                              //LIST-
@@ -361,7 +363,10 @@ class PostsModel extends Database
 
             $stmt = $this->select("INSERT INTO `RPD` (`ID`, `USER`, `STATUS`,`rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics`) VALUES
                                                      (NULL,'$USERS' ,'$STATUS','$rpdName', '$direction', '$code', '$educLvl', '$educForm', '$year', '$protocol', '$date', '$surname', '$name', '$fname', '$goals', '$tasks', '$objectives', '$disciplinePlace', '$SEMESTR', '$CURS', '$competencies', '$hours', '$creditUnits', '$sectionsTopics', '$smthElse', '$supportList', '$fundList', '$literatureList', '$periodicalsList', '$internetResList', '$infoTechResList', '$profDataInfList', '$reqSoftwareList', '$TReqLogistics') ");
-          $stmt->execute();
+          
+            echo "Пыдр_last";
+            
+            $stmt->execute();
 
 //        return "addInRpd done - ";
 
