@@ -1,0 +1,29 @@
+.auth-form{
+    width: 400px;
+
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.auth-form_subtitle{
+    color:rgb(180, 184, 193)
+}
+.auth-form_form{
+    max-width: 360px;
+    
+}
+.auth-form__footer {
+    margin-top: 8px;
+}
+.auth-page{
+    height: 100vh;
+    width: 100vw;
+    display:flex ;
+    background-color: #ebebeb;
+    justify-content: center;
+    
+}

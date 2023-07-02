@@ -1,0 +1,17 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Model\\": "Model/",
+      "Api\\": "api/",
+      "Con\\": "inc/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*",
+    "ext-simplexml": "*",
+    "ext-xml": "*",
+    "ext-dom": "*",
+    "ext-libxml": "*",
+    "ext-json": "*"
+  }
+}

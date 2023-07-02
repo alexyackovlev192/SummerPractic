@@ -1,0 +1,15 @@
+.educ-page{
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    flex-direction: column;
+    padding: 20px;
+    
+}
+.dataTable{
+    padding: 20px;
+}
+.planText{
+    margin-bottom: 16px !important;
+}
+

@@ -1,0 +1,30 @@
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+    background: #ebebeb !important
+}
+
+.construct-page{
+    position: relative;
+    background: #ebebeb; 
+    padding: 2rem;
+    border-radius: .5rem;
+    height: 100%;
+}
+.construct-form{
+    padding: 1rem;
+}
+.stepClass{
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+}
+
+.stepButton{
+    margin-top: 1rem;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
