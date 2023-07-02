@@ -79,12 +79,12 @@ class Document
 
         $xmlNode = simplexml_load_string(file_get_contents($target_file));
         $arrayData = $this->xmlToArray($xmlNode);
-        //echo json_encode($arrayData2);
+        echo json_encode($arrayData);
 
         $target_dir2 = "../uploads/";
         $target_file2 = $target_dir2 . basename($_FILES["file"]["name"], ".plx");
 
-        file_put_contents($target_file2 . '.json', json_encode($arrayData,JSON_UNESCAPED_UNICODE));
+        file_put_contents($target_file2 . '.json', json_encode($arrayData, JSON_UNESCAPED_UNICODE));
         unlink($target_file);
         return "toJson done - ";
     }

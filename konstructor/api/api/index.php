@@ -101,10 +101,13 @@ if ($method === 'GET') {
     if ($type === 'uploadFile') {
 
         echo $doc->upload(); // загружает файл
+        echo "\n ================= \n";
         echo $doc->deleteString(); // вырезает ненужные строки
+        echo "\n ================= \n";
         echo $doc->toJson(); // превращает файл в json
+        echo "\n ================= \n";
         echo $doc->insertData(); // заполняетв DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
-
+        echo "\n ================= \n";
     }
     //СОЗДАНИЕ РПД
     if ($type === 'createRpd') {
