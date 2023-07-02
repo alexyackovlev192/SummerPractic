@@ -2,6 +2,7 @@ import React from "react";
 import AuthPage from "./pages/auth-page";
 import Directions from "./pages/directions-page/directions-page";
 import ConstructPage from "./pages/construct-page";
+import UploadPage from "./pages/upload-page";
 import Navbar from "./components/Navbar";
 import WorkingProgramms from "./pages/workingProgramms-page/workingProgramms-page";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
@@ -30,6 +31,7 @@ const NavbarWithLocation: React.FC = () => {
           <Route path="/directions" element={<Directions />} />
           <Route path="/working-programms" element={<WorkingProgramms />} />
           <Route path="/constructor" element={<ConstructPage />} />
+          <Route path="/upload" element={<UploadPage />} />
         </Routes>
       </div>
     </div>
