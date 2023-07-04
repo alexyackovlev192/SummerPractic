@@ -27,7 +27,7 @@ const Directions: React.FC = () => {
   const [mockDir, setMockDir] = useState<any[]>([]);
 
   useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getDesciplines")
+    postData("http://localhost/summerpractic/konstructor/api/getAllDetail")
       .then((data) => {
         setMockDir(data);
         console.log(data);
@@ -40,12 +40,11 @@ const Directions: React.FC = () => {
 
 
   type TrowData = {
-    id: number;
-    programm: string;
+    ID: number;
+    rpdName: string;
     code: string;
-    recYear: number;
-    educLvl: string;
-    educDir: string;
+    year: number;
+    educlvl: string;
   };
   
   type TOrder = "asc" | "desc";
@@ -87,8 +86,22 @@ const Directions: React.FC = () => {
     return stabilizedRowArray.map((el) => el[0]);
   };
 
+  const modifiedMockDir = mockDir.map((item) => {
+    const { ID, rpdName, code, year, educlvl} = item;
+  
+    return {
+      ID,
+      rpdName,
+      code,
+      year,
+      educlvl
+    };
+  });
+
+
+
   const [orderDirection, setOrderDirection] = useState<TOrder>("asc");
-  const [orderBy, setOrderBy] = useState("programm");
+  const [orderBy, setOrderBy] = useState("rpdName");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -123,15 +136,15 @@ const Directions: React.FC = () => {
               <Table>
                 <TableHead style={{ backgroundColor: "#1D51A3" }}>
                   <TableRow>
-                    <TableCell key="programm">
+                    <TableCell key="rpdName">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "programm"}
+                        active={orderBy === "rpdName"}
                         direction={
-                          orderBy === "programm" ? orderDirection : "asc"
+                          orderBy === "rpdName" ? orderDirection : "asc"
                         }
                         onClick={(event) =>
-                          handleRequestSort(event, "programm")
+                          handleRequestSort(event, "rpdName")
                         }
                       >
                         Направление
@@ -147,26 +160,26 @@ const Directions: React.FC = () => {
                         Код направления
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell key="recYear">
+                    <TableCell key="year">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "recYear"}
+                        active={orderBy === "year"}
                         direction={
-                          orderBy === "recYear" ? orderDirection : "asc"
+                          orderBy === "year" ? orderDirection : "asc"
                         }
-                        onClick={(event) => handleRequestSort(event, "recYear")}
+                        onClick={(event) => handleRequestSort(event, "year")}
                       >
                         Год набора
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell key="educLvl">
+                    <TableCell key="educlvl">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "educLvl"}
+                        active={orderBy === "educlvl"}
                         direction={
-                          orderBy === "educLvl" ? orderDirection : "asc"
+                          orderBy === "educlvl" ? orderDirection : "asc"
                         }
-                        onClick={(event) => handleRequestSort(event, "educLvl")}
+                        onClick={(event) => handleRequestSort(event, "educlvl")}
                       >
                         Уровень образования
                       </TableSortLabel>
@@ -174,17 +187,16 @@ const Directions: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 {sortedRowInformation(
-                  mockDir,
+                  modifiedMockDir,
                   getComparator(orderDirection, orderBy)
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.programm}</TableCell>
+                      <TableCell>{row.rpdName}</TableCell>
                       <TableCell>{row.code}</TableCell>
-                      <TableCell>{row.recYear}</TableCell>
-                      <TableCell>{row.educLvl}</TableCell>
-                      {/* <TableCell>{row.educDir}</TableCell> */}
+                      <TableCell>{row.year}</TableCell>
+                      <TableCell>{row.educlvl}</TableCell>
                     </TableRow>
                   ))}
               </Table>

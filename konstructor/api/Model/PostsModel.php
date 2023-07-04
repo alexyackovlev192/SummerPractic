@@ -28,7 +28,7 @@ class PostsModel extends Database
      */
     public function getAllDetail(): string
     {
-        $stmt = $this->select('SELECT * from DETAIL');
+        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl from `DETAIL`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
@@ -273,7 +273,7 @@ class PostsModel extends Database
 
         // мне тут надо получить массив data
 
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < $iMax; $i++) {
 
 
             //----

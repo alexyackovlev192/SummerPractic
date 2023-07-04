@@ -60,6 +60,12 @@ if ($method === 'GET') {
             echo $post->getDetail($id);
         }
     }
+    //ОТПРАВКА С СЕРВЕРА ВСЕХ ДИСЦИПЛИН
+    if ($type === 'getAllDetail') {
+        if(isset($id)){
+            echo $post->getAllDetail($id);
+        }
+    }
     //ОТПРАВКА С СЕРВЕРА СПИСОК РПД
     if ($type === 'getAllRpd') {
         echo $post->getAllRpd();
