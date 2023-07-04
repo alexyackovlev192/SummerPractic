@@ -20,13 +20,26 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { mockWorkRowData } from "./mockWorkData";
-import { mockRpd } from "./MockObject";
+//import { mockRpd } from "./MockObject";
 // import educData from "./educData.json"
 import DialogMenu from "../../components/DialogMenu";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./workingProgramms-page.css";
 
+// Example POST method implementation:
+async function postData(url = "") {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
+
+  });
+  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
+}
+
+console.log(postData("http://localhost/summerpractic/konstructor/api/getRpd"));
+
+var mockRpd: any[] = []; 
 type TrowData = {
   rpdId: string;
   rpdName: string;
