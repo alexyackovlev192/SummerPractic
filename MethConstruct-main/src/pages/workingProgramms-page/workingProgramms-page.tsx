@@ -42,6 +42,7 @@ const WorkingProgramms: React.FC = () => {
     postData("http://localhost/summerpractic/konstructor/api/getRpd")
       .then((data) => {
         setMockRpd(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Ошибка при получении данных:", error);
