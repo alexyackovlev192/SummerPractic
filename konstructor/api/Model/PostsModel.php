@@ -420,7 +420,7 @@ class PostsModel extends Database
      */
     public function getRpd($id)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD` WHERE ID = '$id'");
+        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD`");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();

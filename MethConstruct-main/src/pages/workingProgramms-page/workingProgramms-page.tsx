@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -10,7 +9,6 @@ import Paper from "@mui/material/Paper";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import EditIcon from "@mui/icons-material/Edit";
 import DialogActions from "@mui/material/DialogActions";
 import TablePagination from "@mui/material/TablePagination";
@@ -18,12 +16,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Box, Button, IconButton, TableSortLabel } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { mockWorkRowData } from "./mockWorkData";
+import Select from "@mui/material/Select";
+// import { mockWorkRowData } from "./mockWorkData";
 //import { mockRpd } from "./MockObject";
 // import educData from "./educData.json"
 import DialogMenu from "../../components/DialogMenu";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./workingProgramms-page.css";
 
@@ -36,10 +34,6 @@ async function postData(url = "") {
   });
   return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
 }
-
-console.log(postData("http://localhost/summerpractic/konstructor/api/getRpd"));
-
-var mockRpd: any[] = []; 
 type TrowData = {
   rpdId: string;
   rpdName: string;
@@ -47,6 +41,20 @@ type TrowData = {
   educLvl: string;
   authors: string;
 };
+var mockRpd: any[] = []; 
+
+postData("http://localhost/summerpractic/konstructor/api/getRpd")
+  .then(mockRpd => {
+    console.log(mockRpd); // Ваши данные в виде массива
+    // Дальнейшая обработка данных
+  })
+  .catch(error => {
+    console.error("Ошибка при получении данных:", error);
+    // Обработка ошибки
+  });
+
+
+
 
 type TOrder = "asc" | "desc";
 
@@ -255,7 +263,7 @@ const WorkingProgramms: React.FC = () => {
                       <TableCell>
                         <IconButton
                           onClick={() => {
-                            handleRpdEdit(row.rpdId);
+                            handleRpdEdit(String(row.rpdId));
                           }}
                         >
                           <EditIcon fontSize="small" color="primary" />
