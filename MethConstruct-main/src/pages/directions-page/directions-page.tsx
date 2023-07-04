@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -9,59 +8,85 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { Box, TableSortLabel } from "@mui/material";
-import { mockRowData } from "./mockData";
 
 import "./directions-page.css";
 
-type TrowData = {
-  id: number;
-  programm: string;
-  code: string;
-  recYear: number;
-  educLvl: string;
-  educDir: string;
-};
 
-type TOrder = "asc" | "desc";
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+// Example POST method implementation:
+async function postData(url = "") {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
 
-function getComparator<Key extends keyof any>(
-  order: TOrder,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-const sortedRowInformation = <T,>(
-  rowArray: readonly T[],
-  comparator: (a: T, b: T) => number
-) => {
-  const stabilizedRowArray = rowArray.map(
-    (el: any, index: any) => [el, index] as [T, number]
-  );
-  stabilizedRowArray.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
   });
-  return stabilizedRowArray.map((el) => el[0]);
-};
+  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
+}
 
 const Directions: React.FC = () => {
+  const [mockDir, setMockDir] = useState<any[]>([]);
+
+  useEffect(() => {
+    postData("http://localhost/summerpractic/konstructor/api/getDesciplines")
+      .then((data) => {
+        setMockDir(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Ошибка при получении данных:", error);
+        // Обработка ошибки
+      });
+  }, []);
+
+
+  type TrowData = {
+    id: number;
+    programm: string;
+    code: string;
+    recYear: number;
+    educLvl: string;
+    educDir: string;
+  };
+  
+  type TOrder = "asc" | "desc";
+  
+  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  function getComparator<Key extends keyof any>(
+    order: TOrder,
+    orderBy: Key
+  ): (
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string }
+  ) => number {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+  
+  const sortedRowInformation = <T,>(
+    rowArray: readonly T[],
+    comparator: (a: T, b: T) => number
+  ) => {
+    const stabilizedRowArray = rowArray.map(
+      (el: any, index: any) => [el, index] as [T, number]
+    );
+    stabilizedRowArray.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedRowArray.map((el) => el[0]);
+  };
+
   const [orderDirection, setOrderDirection] = useState<TOrder>("asc");
   const [orderBy, setOrderBy] = useState("programm");
   const [page, setPage] = useState(0);
@@ -149,7 +174,7 @@ const Directions: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 {sortedRowInformation(
-                  mockRowData,
+                  mockDir,
                   getComparator(orderDirection, orderBy)
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -168,7 +193,7 @@ const Directions: React.FC = () => {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={mockRowData.length}
+              count={mockDir.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
