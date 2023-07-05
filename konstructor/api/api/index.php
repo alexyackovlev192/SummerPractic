@@ -114,6 +114,8 @@ if ($method === 'GET') {
         echo "\n ================= \n";
         echo $doc->insertData(); // заполняет в DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
         echo "\n ================= \n";
+        echo $post->createRpd();
+        echo "\n ================= \n";
     }
     //СОЗДАНИЕ РПД
     if ($type === 'createRpd') {
