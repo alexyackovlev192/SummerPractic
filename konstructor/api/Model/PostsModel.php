@@ -28,7 +28,7 @@ class PostsModel extends Database
      */
     public function getAllDetail(): string
     {
-        $stmt = $this->select('SELECT * from DETAIL');
+        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl from `DETAIL`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
@@ -265,6 +265,7 @@ class PostsModel extends Database
      */
     public function createRpd()
     {
+
         $jsonCursSession = $this->getCursAndSession();
         $arrayCursSession = json_decode($jsonCursSession,true );
 
@@ -272,7 +273,7 @@ class PostsModel extends Database
 
         // мне тут надо получить массив data
 
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < $iMax; $i++) {
 
 
             //----
@@ -300,7 +301,7 @@ class PostsModel extends Database
 
 
             //----
-            //----LIST
+            //----listsogltable
             //----
 
             $protocol = $arrayList[0]['rasmotr'];                              //LIST-
@@ -361,7 +362,9 @@ class PostsModel extends Database
 
             $stmt = $this->select("INSERT INTO `RPD` (`ID`, `USER`, `STATUS`,`rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics`) VALUES
                                                      (NULL,'$USERS' ,'$STATUS','$rpdName', '$direction', '$code', '$educLvl', '$educForm', '$year', '$protocol', '$date', '$surname', '$name', '$fname', '$goals', '$tasks', '$objectives', '$disciplinePlace', '$SEMESTR', '$CURS', '$competencies', '$hours', '$creditUnits', '$sectionsTopics', '$smthElse', '$supportList', '$fundList', '$literatureList', '$periodicalsList', '$internetResList', '$infoTechResList', '$profDataInfList', '$reqSoftwareList', '$TReqLogistics') ");
-          $stmt->execute();
+          
+            
+            $stmt->execute();
 
 //        return "addInRpd done - ";
 
@@ -417,7 +420,7 @@ class PostsModel extends Database
      */
     public function getRpd($id)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD` WHERE ID = '$id'");
+        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD`");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();

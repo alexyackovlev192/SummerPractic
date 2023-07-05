@@ -2,18 +2,17 @@
  * ПОСТИТ ФАЙЛ .plx
  */
 
-document.querySelector("#upload-button").addEventListener('click', async function() {
-    let upload = await uploadFile();
+// document.querySelector("#upload-button").addEventListener('click', async function() {
+//     let upload = await uploadFile();
 
-    if(upload.error == 0)
-        alert('File uploaded successful');
-    else if(upload.error == 1)
-        alert('File uploading failed - ' + upload.message);
-});
+//     if(upload.error == 0)
+//         alert('File uploaded successful');
+//     else if(upload.error == 1)
+//         alert('File uploading failed - ' + upload.message);
+// });
 
 // async function managing upload operation
-async function uploadFile() {
-    // function return value
+ async function uploadFile() {
     let return_data = { error: 0, message: '' };
 
     try {
@@ -30,7 +29,7 @@ async function uploadFile() {
 
             
             // send fetch along with cookies
-            let response = await fetch('https://localhost/SummerPractic/konstructor/api/uploadFile', {
+            let response = await fetch('http://localhost/SummerPractic/konstructor/api/uploadFile', {
                 method: 'POST',
                 credentials: 'same-origin',
                 body: data
@@ -54,4 +53,14 @@ async function uploadFile() {
     }
 
     return return_data;
-}
+  }
+
+export async function handleUploadButtonClick() {
+    let upload = await uploadFile();
+
+     if(upload.error == 0)
+         alert('File uploaded successful');
+     else if(upload.error == 1)
+         alert('File uploading failed - ' + upload.message);
+  }
+

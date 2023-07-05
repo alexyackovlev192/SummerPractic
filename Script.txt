@@ -1,0 +1,139 @@
+Create Table USERS (
+ID int(11) Primary Key,
+RPD_ID int(11),
+NAME text,
+LOGIN text
+);
+
+Create Table DESCIPLINS (
+ID int(10) Primary Key,
+NAME text,
+D_ID int(10),
+DETAIL_ID int(10)
+);
+
+Create Table DETAIL (
+ID int(11) Primary Key,
+DES_ID int(11),
+kod text,
+rpdName text,
+direction text,
+code text,
+educLvl text,
+educForm text,
+year text,
+hours text,
+creditUnits text
+);
+
+
+Create Table DISP_USERS_CON (
+ID int(11) Primary Key,
+ID_USER int(11),
+ID_DISCP int(11)
+);
+
+
+
+Create Table DOCUMENTS (
+ID int(10) Primary Key,
+D_ID int(11),
+DOC_ID int(11),
+NAME text,
+YEAR int(11)
+);
+
+
+Create Table CURS_SEMESTR (
+ID int(11) Primary Key,
+DOC_ID int(11),
+ID_D int(11),
+CURS text,
+SEMESTR text
+);
+
+
+Create Table listSoglTable (
+id int(11) Primary Key,
+rasmotr text,
+protocolNumber text,
+surName text,
+firstName text,
+lastName text
+);
+
+Create Table RPD (
+ID int(11) Primary Key,
+USER int(11),
+STATUS text,
+rpdName text,
+direction text,
+code text,
+educLvl text,
+educForm text,
+year int(11),
+protocol text,
+date text,
+surname text,
+name text,
+fName text,
+goals text,
+tasks text,
+objectives text,
+disciplinePlace text,
+semester int(3),
+course text,
+competencies json,
+hours text,
+creditUnits int(255),
+sectionsTopics text,
+smthElse text,
+supportList text,
+fundList text,
+literatureList text,
+periodicalsList text,
+internetResList text,
+infoTechResList text,
+profDataInfList text,
+reqSoftwareList text,
+TReqLogistics json
+);
+
+
+
+Alter Table USERS
+Add Constraint Users_RPD_FK
+Foreign key (RPD_ID)
+References RPD(ID);
+
+Alter Table DESCIPLINS
+Add Constraint Desciplins_Detail_FK
+Foreign key (DETAIL_ID)
+References DETAIL(ID);
+
+Alter Table DISP_USERS_CON
+Add Constraint DUC_Users_FK
+Foreign key (ID_USER)
+References USERS(ID);
+
+Alter Table DISP_USERS_CON
+Add Constraint DUC_DESCIPLINS_FK
+Foreign key (ID_DISCP)
+References DESCIPLINS(ID);
+
+================================
+Alter Table CURS_SEMESTR
+Add Constraint CS_DOCUMENTS_FK
+Foreign key (DOC_ID)
+References DOCUMENTS(DOC_ID);
+================================
+
+Alter Table DETAIL
+Add Constraint DETAIL_DESCP_FK
+Foreign key (DES_ID)
+References DESCIPLINS(ID);
+
+Alter Table RPD
+Add Constraint RPD_USERS_FK
+Foreign key (USER)
+References USERS(ID);
