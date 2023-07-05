@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -8,100 +9,61 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { Box, TableSortLabel } from "@mui/material";
+import { mockRowData } from "./mockData";
 
 import "./directions-page.css";
 
+type TrowData = {
+  id: number;
+  programm: string;
+  code: string;
+  recYear: number;
+  educLvl: string;
+  educDir: string;
+};
 
+type TOrder = "asc" | "desc";
 
-// Example POST method implementation:
-async function postData(url = "") {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-
-  });
-  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
 }
 
-const Directions: React.FC = () => {
-  const [mockDir, setMockDir] = useState<any[]>([]);
+function getComparator<Key extends keyof any>(
+  order: TOrder,
+  orderBy: Key
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
+) => number {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
-  useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getAllDetail")
-      .then((data) => {
-        setMockDir(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-        // Обработка ошибки
-      });
-  }, []);
-
-
-  type TrowData = {
-    ID: number;
-    rpdName: string;
-    code: string;
-    year: number;
-    educlvl: string;
-  };
-  
-  type TOrder = "asc" | "desc";
-  
-  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-  
-  function getComparator<Key extends keyof any>(
-    order: TOrder,
-    orderBy: Key
-  ): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string }
-  ) => number {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-  
-  const sortedRowInformation = <T,>(
-    rowArray: readonly T[],
-    comparator: (a: T, b: T) => number
-  ) => {
-    const stabilizedRowArray = rowArray.map(
-      (el: any, index: any) => [el, index] as [T, number]
-    );
-    stabilizedRowArray.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedRowArray.map((el) => el[0]);
-  };
-
-  const modifiedMockDir = mockDir.map((item) => {
-    const { ID, rpdName, code, year, educlvl} = item;
-  
-    return {
-      ID,
-      rpdName,
-      code,
-      year,
-      educlvl
-    };
+const sortedRowInformation = <T,>(
+  rowArray: readonly T[],
+  comparator: (a: T, b: T) => number
+) => {
+  const stabilizedRowArray = rowArray.map(
+    (el: any, index: any) => [el, index] as [T, number]
+  );
+  stabilizedRowArray.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
   });
+  return stabilizedRowArray.map((el) => el[0]);
+};
 
-
-
+const Directions: React.FC = () => {
   const [orderDirection, setOrderDirection] = useState<TOrder>("asc");
-  const [orderBy, setOrderBy] = useState("rpdName");
+  const [orderBy, setOrderBy] = useState("programm");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -136,15 +98,15 @@ const Directions: React.FC = () => {
               <Table>
                 <TableHead style={{ backgroundColor: "#1D51A3" }}>
                   <TableRow>
-                    <TableCell key="rpdName">
+                    <TableCell key="programm">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "rpdName"}
+                        active={orderBy === "programm"}
                         direction={
-                          orderBy === "rpdName" ? orderDirection : "asc"
+                          orderBy === "programm" ? orderDirection : "asc"
                         }
                         onClick={(event) =>
-                          handleRequestSort(event, "rpdName")
+                          handleRequestSort(event, "programm")
                         }
                       >
                         Направление
@@ -160,26 +122,26 @@ const Directions: React.FC = () => {
                         Код направления
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell key="year">
+                    <TableCell key="recYear">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "year"}
+                        active={orderBy === "recYear"}
                         direction={
-                          orderBy === "year" ? orderDirection : "asc"
+                          orderBy === "recYear" ? orderDirection : "asc"
                         }
-                        onClick={(event) => handleRequestSort(event, "year")}
+                        onClick={(event) => handleRequestSort(event, "recYear")}
                       >
                         Год набора
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell key="educlvl">
+                    <TableCell key="educLvl">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "educlvl"}
+                        active={orderBy === "educLvl"}
                         direction={
-                          orderBy === "educlvl" ? orderDirection : "asc"
+                          orderBy === "educLvl" ? orderDirection : "asc"
                         }
-                        onClick={(event) => handleRequestSort(event, "educlvl")}
+                        onClick={(event) => handleRequestSort(event, "educLvl")}
                       >
                         Уровень образования
                       </TableSortLabel>
@@ -187,16 +149,17 @@ const Directions: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 {sortedRowInformation(
-                  modifiedMockDir,
+                  mockRowData,
                   getComparator(orderDirection, orderBy)
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.rpdName}</TableCell>
+                      <TableCell>{row.programm}</TableCell>
                       <TableCell>{row.code}</TableCell>
-                      <TableCell>{row.year}</TableCell>
-                      <TableCell>{row.educlvl}</TableCell>
+                      <TableCell>{row.recYear}</TableCell>
+                      <TableCell>{row.educLvl}</TableCell>
+                      {/* <TableCell>{row.educDir}</TableCell> */}
                     </TableRow>
                   ))}
               </Table>
@@ -205,7 +168,7 @@ const Directions: React.FC = () => {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={mockDir.length}
+              count={mockRowData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

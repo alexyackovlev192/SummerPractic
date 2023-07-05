@@ -17,7 +17,7 @@ use PDOException;
  */
 class Database
 {
-    private string $hostname;         // MySQL Hostname
+    private ?string $hostname;         // MySQL Hostname
     private string $username;         // MySQL Username
     private string $password;         // MySQL Password
     private string $database;         // MySQL Database

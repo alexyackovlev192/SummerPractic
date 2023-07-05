@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -9,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import EditIcon from "@mui/icons-material/Edit";
 import DialogActions from "@mui/material/DialogActions";
 import TablePagination from "@mui/material/TablePagination";
@@ -16,103 +18,80 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Box, Button, IconButton, TableSortLabel } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-// import { mockWorkRowData } from "./mockWorkData";
-//import { mockRpd } from "./MockObject";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { mockWorkRowData } from "./mockWorkData";
+import { mockRpd } from "./MockObject";
 // import educData from "./educData.json"
 import DialogMenu from "../../components/DialogMenu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./workingProgramms-page.css";
 
-// Example POST method implementation:
-async function postData(url = "") {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
+type TrowData = {
+  rpdId: string;
+  rpdName: string;
+  code: string;
+  educLvl: string;
+  authors: string;
+};
 
-  });
-  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
+type TOrder = "asc" | "desc";
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
 }
 
-const WorkingProgramms: React.FC = () => {
-  const [mockRpd, setMockRpd] = useState<any[]>([]);
+function getComparator<Key extends keyof any>(
+  order: TOrder,
+  orderBy: Key
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
+) => number {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
-  useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getRpd")
-      .then((data) => {
-        setMockRpd(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-        // Обработка ошибки
-      });
-  }, []);
-
-  type TrowData = {
-    ID: string;
-    rpdName: string;
-    code: string;
-    educLvl: string;
-    authors: string;
-  };
-  
-  
-  type TOrder = "asc" | "desc";
-  
-  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-  
-  function getComparator<Key extends keyof any>(
-    order: TOrder,
-    orderBy: Key
-  ): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string }
-  ) => number {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-  
-  const sortedRowInformation = <T,>(
-    rowArray: readonly T[],
-    comparator: (a: T, b: T) => number
-  ) => {
-    const stabilizedRowArray = rowArray.map(
-      (el: any, index: any) => [el, index] as [T, number]
-    );
-    stabilizedRowArray.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedRowArray.map((el) => el[0]);
-  };
-  
-  const modifiedMockRpd = mockRpd.map((item) => {
-    const { ID, rpdName, code, educLvl, surname, name, fName } = item;
-  
-    const authors = `${surname} ${name} ${fName}`;
-  
-    return {
-      ID,
-      rpdName,
-      code,
-      educLvl,
-      authors,
-    };
+const sortedRowInformation = <T,>(
+  rowArray: readonly T[],
+  comparator: (a: T, b: T) => number
+) => {
+  const stabilizedRowArray = rowArray.map(
+    (el: any, index: any) => [el, index] as [T, number]
+  );
+  stabilizedRowArray.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
   });
+  return stabilizedRowArray.map((el) => el[0]);
+};
 
+const modifiedMockRpd = mockRpd.map((item) => {
+  const { rpdId, rpdName, code, educLvl, surname, name, fName } = item;
 
+  const authors = `${surname} ${name} ${fName}`;
+
+  return {
+    rpdId,
+    rpdName,
+    code,
+    educLvl,
+    surname,
+    name,
+    fName,
+    authors,
+  };
+});
+
+const WorkingProgramms: React.FC = () => {
   const [orderDirection, setOrderDirection] = useState<TOrder>("asc");
   const [orderBy, setOrderBy] = useState("programm");
   const [page, setPage] = useState(0);
@@ -168,13 +147,13 @@ const WorkingProgramms: React.FC = () => {
   };
 
   const handleRpdEdit = (id: string) => {
-    const targetRpd = mockRpd.find((rpd: any) => rpd.ID === id);
+    const targetRpd = mockRpd.find((rpd: any) => rpd.rpdId === id);
     navigate("/constructor", { state: { formValues: targetRpd } });
   };
 
   const [selectedRpdName, setSelectedRpdName] = useState({
     rpdName: "",
-    ID: "",
+    rpdId: "",
   });
 
   return (
@@ -189,12 +168,12 @@ const WorkingProgramms: React.FC = () => {
               <Table>
                 <TableHead style={{ backgroundColor: "#1D51A3" }}>
                   <TableRow>
-                    <TableCell key="ID">
+                    <TableCell key="rpdId">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "ID"}
-                        direction={orderBy === "ID" ? orderDirection : "asc"}
-                        onClick={(event) => handleRequestSort(event, "ID")}
+                        active={orderBy === "rpdId"}
+                        direction={orderBy === "rpdId" ? orderDirection : "asc"}
+                        onClick={(event) => handleRequestSort(event, "rpdId")}
                       >
                         ID
                       </TableSortLabel>
@@ -255,7 +234,7 @@ const WorkingProgramms: React.FC = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.ID}</TableCell>
+                      <TableCell>{row.rpdId}</TableCell>
                       <TableCell>{row.code}</TableCell>
                       <TableCell>{row.rpdName}</TableCell>
                       <TableCell>{row.educLvl}</TableCell>
@@ -263,7 +242,7 @@ const WorkingProgramms: React.FC = () => {
                       <TableCell>
                         <IconButton
                           onClick={() => {
-                            handleRpdEdit(String(row.ID));
+                            handleRpdEdit(row.rpdId);
                           }}
                         >
                           <EditIcon fontSize="small" color="primary" />
@@ -342,10 +321,10 @@ const WorkingProgramms: React.FC = () => {
                   value={selectedRpdName.rpdName}
                   onChange={(event) =>
                     setSelectedRpdName({
-                      ID:
+                      rpdId:
                         modifiedMockRpd.find(
                           (item) => item.rpdName === event.target.value
-                        )?.ID || "",
+                        )?.rpdId || "",
                       rpdName: event.target.value,
                     })
                   }
@@ -353,7 +332,7 @@ const WorkingProgramms: React.FC = () => {
                   label="Направление"
                 >
                   {modifiedMockRpd.map((item) => (
-                    <MenuItem key={item.ID} value={item.rpdName}>
+                    <MenuItem key={item.rpdId} value={item.rpdName}>
                       {item.rpdName}
                     </MenuItem>
                   ))}
@@ -363,7 +342,7 @@ const WorkingProgramms: React.FC = () => {
             <DialogActions>
               <Button
                 fullWidth
-                onClick={() => handleRpdEdit(selectedRpdName.ID)}
+                onClick={() => handleRpdEdit(selectedRpdName.rpdId)}
               >
                 Перейти к конструктору
               </Button>

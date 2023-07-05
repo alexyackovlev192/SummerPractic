@@ -98,21 +98,6 @@ const Navbar: React.FC = () => {
               style={{ textDecoration: "none", color: "inherit" }}
               to="/working-programms"
             ></Link>
-            <Link
-              style={{ textDecoration: "none", color: "inherit" }}
-              to="/upload"
-            >
-              <ListItemButton onClick={toggleDrawer}>
-                <ListItemIcon sx={{ minWidth: 0, paddingRight: "8px" }}>
-                  <TaskRoundedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Загрузка учебного плана" />
-              </ListItemButton>
-            </Link>
-            <Link
-              style={{ textDecoration: "none", color: "inherit" }}
-              to="/upload"
-            ></Link>
           </List>
         </Box>
       </Drawer>

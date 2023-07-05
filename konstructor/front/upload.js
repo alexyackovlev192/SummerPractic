@@ -30,7 +30,7 @@ async function uploadFile() {
 
             
             // send fetch along with cookies
-            let response = await fetch('https://localhost/SummerPractic/konstructor/api/uploadFile', {
+            let response = await fetch('https://localhost/pro/konstructor/api/uploadFile', {
                 method: 'POST',
                 credentials: 'same-origin',
                 body: data

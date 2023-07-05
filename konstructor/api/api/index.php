@@ -60,12 +60,6 @@ if ($method === 'GET') {
             echo $post->getDetail($id);
         }
     }
-    //ОТПРАВКА С СЕРВЕРА ВСЕХ ДИСЦИПЛИН
-    if ($type === 'getAllDetail') {
-        if(isset($id)){
-            echo $post->getAllDetail($id);
-        }
-    }
     //ОТПРАВКА С СЕРВЕРА СПИСОК РПД
     if ($type === 'getAllRpd') {
         echo $post->getAllRpd();
@@ -107,15 +101,10 @@ if ($method === 'GET') {
     if ($type === 'uploadFile') {
 
         echo $doc->upload(); // загружает файл
-        echo "\n ================= \n";
         echo $doc->deleteString(); // вырезает ненужные строки
-        echo "\n ================= \n";
         echo $doc->toJson(); // превращает файл в json
-        echo "\n ================= \n";
-        echo $doc->insertData(); // заполняет в DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
-        echo "\n ================= \n";
-        echo $post->createRpd();
-        echo "\n ================= \n";
+        echo $doc->insertData(); // заполняетв DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
+
     }
     //СОЗДАНИЕ РПД
     if ($type === 'createRpd') {
