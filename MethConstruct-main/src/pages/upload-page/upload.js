@@ -17,7 +17,7 @@
 
     try {
         // no file selected
-        if(document.querySelector("#file-to-upload").files.length == 0) {
+        if(document.querySelector("#file-to-upload").files.length === 0) {
             throw new Error('No file selected');
         }
         else {
@@ -36,14 +36,14 @@
             });
 
             // server responded with http response != 200
-            if(response.status != 200)
+            if(response.status !== 200)
                 throw new Error('HTTP response code != 200');
 
             // read json response from server
             // success response example : {"error":0,"message":""}
             // error response example : {"error":1,"message":"File type not allowed"}
             let json_response = await response.json();
-            if(json_response.error == 1)
+            if(json_response.error === 1)
                 throw new Error(json_response.message);
         }
     }
@@ -58,9 +58,9 @@
 export async function handleUploadButtonClick() {
     let upload = await uploadFile();
 
-     if(upload.error == 0)
+     if(upload.error === 0)
          alert('File uploaded successful');
-     else if(upload.error == 1)
+     else if(upload.error === 1)
          alert('File uploading failed - ' + upload.message);
   }
 
