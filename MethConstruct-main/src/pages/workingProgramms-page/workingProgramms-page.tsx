@@ -17,38 +17,30 @@ import { Box, Button, IconButton, TableSortLabel } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import { mockWorkRowData } from "./mockWorkData";
-//import { mockRpd } from "./MockObject";
-// import educData from "./educData.json"
 import DialogMenu from "../../components/DialogMenu";
 import { useNavigate } from "react-router-dom";
 
 import "./workingProgramms-page.css";
+import  postData from "../postData.js";
 
-// Example POST method implementation:
-async function postData(url = "") {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-
-  });
-  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
-}
 
 const WorkingProgramms: React.FC = () => {
   const [mockRpd, setMockRpd] = useState<any[]>([]);
 
   useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getRpd")
-      .then((data) => {
-        setMockRpd(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-        // Обработка ошибки
-      });
+    fetchData();
   }, []);
+
+  async function fetchData() {
+    try {
+      const data = await postData("http://localhost/summerpractic/konstructor/api/getAllRpd", "GET");
+      console.log(data);
+      setMockRpd(data);
+      
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
 
   type TrowData = {
     ID: string;
@@ -100,7 +92,6 @@ const WorkingProgramms: React.FC = () => {
   
   const modifiedMockRpd = mockRpd.map((item) => {
     const { ID, rpdName, code, educLvl, surname, name, fName } = item;
-  
     const authors = `${surname} ${name} ${fName}`;
   
     return {
@@ -168,10 +159,16 @@ const WorkingProgramms: React.FC = () => {
   };
 
   const handleRpdEdit = (id: string) => {
-    const targetRpd = mockRpd.find((rpd: any) => rpd.ID === id);
-    navigate("/constructor", { state: { formValues: targetRpd } });
+    const targetRpd = mockRpd.find((rpd: any) => String(rpd.ID) === id);
+    const targetRpdObject = Object.create(Object.prototype, Object.getOwnPropertyDescriptors(targetRpd));
+    console.log("targetRpdObject " + targetRpdObject);
+    if (targetRpd) {
+      navigate("/constructor", { state: { formValues: targetRpdObject }});
+    } else {
+      console.log(`Rpd with ID ${id} not found in mockRpd.`);
+    }
   };
-
+  
   const [selectedRpdName, setSelectedRpdName] = useState({
     rpdName: "",
     ID: "",

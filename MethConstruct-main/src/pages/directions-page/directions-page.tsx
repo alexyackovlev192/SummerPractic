@@ -10,33 +10,24 @@ import TablePagination from "@mui/material/TablePagination";
 import { Box, TableSortLabel } from "@mui/material";
 
 import "./directions-page.css";
+import  postData from "../postData.js"
 
-
-
-// Example POST method implementation:
-async function postData(url = "") {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-
-  });
-  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
-}
 
 const Directions: React.FC = () => {
   const [mockDir, setMockDir] = useState<any[]>([]);
 
   useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getAllDetail")
-      .then((data) => {
-        setMockDir(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-        // Обработка ошибки
-      });
+    fetchData();
   }, []);
+
+  async function fetchData() {
+    try {
+      const data = await postData("http://localhost/summerpractic/konstructor/api/getAllDetail", "GET");
+      setMockDir(data);
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
 
 
   type TrowData = {

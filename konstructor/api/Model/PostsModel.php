@@ -420,7 +420,7 @@ class PostsModel extends Database
      */
     public function getRpd($id)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD`");
+        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD` WHERE `ID` = $id");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();
@@ -462,7 +462,7 @@ class PostsModel extends Database
      */
     public function getAllRpd()
     {
-        $stmt = $this->select("SELECT ID, code, rpdNAME, educLvl , surname FROM `RPD`");
+        $stmt = $this->select("SELECT * FROM `RPD`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
@@ -473,9 +473,9 @@ class PostsModel extends Database
      * @param $id
      * @return false|string
      */
-    public function getDetail($id)
+    public function getDetail($rpdName)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `NAME` FROM `DETAIL` WHERE DES_ID = '$id'");
+        $stmt = $this->select("SELECT `hours`, `creditUnits`, `rpdName` FROM `DETAIL`  WHERE `rpdName` = $rpdName");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();

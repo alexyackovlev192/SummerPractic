@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Typography from "@mui/material/Typography";
-import { TextField, Box, FormControl, Select, MenuItem } from "@mui/material";
+import { TextField, Box, Select, MenuItem } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
+import  postData from "../../postData.js"
 
 type TOpopPlaceData = {
   disciplinePlace: string;
@@ -19,48 +20,29 @@ export function OpopPlaceForm({
   course,
   updateFields,
 }: TOpopPlaceFormProps) {
-  const renderSemesterOptions = () => {
-    switch (course) {
-      case "1":
-        return [
-          <MenuItem key={1} value={1}>
-            1
-          </MenuItem>,
-          <MenuItem key={2} value={2}>
-            2
-          </MenuItem>,
-        ];
-      case "2":
-        return [
-          <MenuItem key={3} value={3}>
-            3
-          </MenuItem>,
-          <MenuItem key={4} value={4}>
-            4
-          </MenuItem>,
-        ];
-      case "3":
-        return [
-          <MenuItem key={5} value={5}>
-            5
-          </MenuItem>,
-          <MenuItem key={6} value={6}>
-            6
-          </MenuItem>,
-        ];
-      case "4":
-        return [
-          <MenuItem key={7} value={7}>
-            7
-          </MenuItem>,
-          <MenuItem key={8} value={8}>
-            8
-          </MenuItem>,
-        ];
-      default:
-        return null;
-    }
-  };
+
+  
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // async function fetchData() {
+  //   try {
+  //     const data = await postData("http://localhost/summerpractic/konstructor/api/getRpd", "GET");
+  //     console.log(data);
+  //     if (data.length > 0) {
+  //       const mockList = data[0]; // Предполагаем, что данные находятся в первом элементе массива
+  //       console.log(mockList);
+  //       updateFields({
+  //         semester: mockList.semester,
+  //         course: mockList.course,
+  //         disciplinePlace: mockList.disciplinePlace,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Ошибка при получении данных:", error);
+  //   }
+  // }
 
   return (
     <>
@@ -73,21 +55,14 @@ export function OpopPlaceForm({
           >
             Место дисциплины
           </Typography>
-          <Select
-            disabled
-            style={{ width: "70%" }}
-            id="education-form"
+          <TextField
+            required
+            id="outlined-required"
             value={disciplinePlace}
-            onChange={(e) => updateFields({ disciplinePlace: e.target.value })}
-            name="educationForm"
-            label="Форма обучения"
-          >
-            <MenuItem value="Обязательная часть">Обязательная часть</MenuItem>
-            <MenuItem value="Вариативная часть">Вариативная часть</MenuItem>
-            <MenuItem value="Дисциплины по выбору">
-              Дисциплины по выбору
-            </MenuItem>
-          </Select>
+            disabled={true}
+            onChange={(e) => updateFields({ course: e.target.value })}
+            style={{ width: "70%" }}
+          />
 
           <Typography
             variant="body2"
@@ -96,24 +71,14 @@ export function OpopPlaceForm({
           >
             Курс прохождения дисциплины
           </Typography>
-
-          <FormControl sx={{ width: "70%" }}>
-            <Select
-              disabled
-              fullWidth
-              id="education-form"
-              value={course}
-              onChange={(e) => updateFields({ course: e.target.value })}
-              name="educationForm"
-              label="Форма обучения"
-            >
-              <MenuItem value="1">1</MenuItem>
-              <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
-              <MenuItem value="4">4</MenuItem>
-            </Select>
-          </FormControl>
-
+          <TextField
+            required
+            id="outlined-required"
+            value={course}
+            disabled={true}
+            onChange={(e) => updateFields({ course: e.target.value })}
+            style={{ width: "70%" }}
+          />
           <Typography
             variant="body2"
             className="inputTypo"
@@ -122,19 +87,14 @@ export function OpopPlaceForm({
             Семестр прохождения дисциплины
           </Typography>
 
-          <FormControl sx={{ width: "70%" }}>
-            <Select
-              disabled
-              fullWidth
-              id="education-form"
-              value={semester}
-              onChange={(e) => updateFields({ semester: e.target.value })}
-              name="Semester"
-              label="Форма обучения"
-            >
-              {renderSemesterOptions()}
-            </Select>
-          </FormControl>
+          <TextField
+            required
+            id="outlined-required"
+            value={semester}
+            disabled={true}
+            onChange={(e) => updateFields({ semester: e.target.value })}
+            style={{ width: "70%" }}
+          />
         </Box>
       </FormWrapper>
     </>

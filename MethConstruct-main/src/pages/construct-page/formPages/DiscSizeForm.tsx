@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect} from "react";
 import { Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
+import  postData from "../../postData.js"
 
 type TDiscSizeData = {
+  rpdName: string;
   hours: string;
   creditUnits: string;
 };
@@ -12,10 +14,35 @@ type TDiscSizeFormProps = TDiscSizeData & {
 };
 
 export function DiscSizeForm({
+  rpdName,
   hours,
   creditUnits,
   updateFields,
 }: TDiscSizeFormProps) {
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const data = await postData("http://localhost/summerpractic/konstructor/api/getDetail/rpdName", "GET");
+      if (data.length > 0) {
+        const mockCount = data; // Предполагаем, что данные находятся в первом элементе массива
+        
+        console.log("===" + data);
+        
+        updateFields({
+          hours: mockCount.hours,
+          creditUnits: mockCount.creditUnits,
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+
   return (
     <div style={{ width: "95%" }}>
       <FormWrapper title="Объем дисциплины">
@@ -30,11 +57,8 @@ export function DiscSizeForm({
           <TextField
             id="creditUnits"
             value={creditUnits}
-            onChange={(e) => {
-              const value = e.target.value;
-              const hours = (parseInt(value) * 60).toString() || "";
-              updateFields({ creditUnits: value, hours: hours });
-            }}
+            disabled
+            onChange={(e) => updateFields({ creditUnits: e.target.value })}
             style={{ width: "95%" }}
           />
           <Typography
@@ -48,6 +72,7 @@ export function DiscSizeForm({
             id="hours"
             value={hours}
             disabled
+            onChange={(e) => updateFields({ hours: e.target.value })}
             style={{ width: "95%" }}
           />
         </Box>

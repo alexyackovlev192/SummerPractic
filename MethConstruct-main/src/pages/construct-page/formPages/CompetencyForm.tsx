@@ -220,7 +220,7 @@ export function CompetencyForm({
             onNodeSelect={handleSelect}
             onNodeToggle={handleToggle}
           >
-            {competencyArray.map((competency: any, index: number) => (
+            {/* {competencyArray.map((competency: any, index: number) => (
               <TreeItem
                 key={index}
                 nodeId={competency.id}
@@ -288,7 +288,7 @@ export function CompetencyForm({
                   )
                 )}
               </TreeItem>
-            ))}
+            ))} */}
           </TreeView>
           <Button
             onClick={() => {
