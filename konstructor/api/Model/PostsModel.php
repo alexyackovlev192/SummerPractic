@@ -489,25 +489,22 @@ class PostsModel extends Database
      */
     public function getDetail($rpdName)
     {
-        $stmt = $this->select("SELECT * FROM `DETAIL` WHERE `rpdName`=$rpdName");
+        $stmt = $this->select("SELECT * FROM `DETAIL` WHERE `rpdName`='$rpdName'");
         $stmt->execute();
-        $stmt2 = $this->select("SELECT FOUND_ROWS()");
-        $stmt2->execute();
-        $row_count =$stmt2->fetchColumn();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if($row_count === 0){
+        $row_count = $stmt->rowCount();
+    
+        if ($row_count === 0) {
             $res = [
                 "status" => false,
-                "message" => "Descipline not found"
+                "message" => $rpdName
             ];
             return json_encode($res);
-        }else{
-            $stmt->execute();
+        } else {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return json_encode($results);
         }
     }
+
 
 
     /**

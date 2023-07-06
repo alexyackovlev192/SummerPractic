@@ -1,10 +1,8 @@
 import React, {useEffect} from "react";
 import { Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
-import  postData from "../../postData.js"
 
 type TDiscSizeData = {
-  rpdName: string;
   hours: string;
   creditUnits: string;
 };
@@ -14,7 +12,6 @@ type TDiscSizeFormProps = TDiscSizeData & {
 };
 
 export function DiscSizeForm({
-  rpdName,
   hours,
   creditUnits,
   updateFields,
@@ -27,14 +24,20 @@ export function DiscSizeForm({
 
   async function fetchData() {
     try {
-      const data = await postData("http://localhost/summerpractic/konstructor/api/getDetail/rpdName", "GET");
-      if (data.length > 0) {
-        const mockCount = data; // Предполагаем, что данные находятся в первом элементе массива
+      const rpdName = 'Физика'; // Здесь нужно указать фактическое значение параметра "rpdName"
+      const url = `http://localhost/summerpractic/konstructor/api/getDetail?rpdName=${rpdName}`;
+
+      const response = await fetch(url, {method: 'GET'});
+      const data = await response.json();
+      
+      if (data.status === false) {
+        console.log(data.message);
+      } else if (data.length > 0) {
+        const mockCount = data[0]; // Предполагаем, что данные находятся в первом элементе массива
         
-        console.log("===" + data);
+        console.log(data);
         
         updateFields({
-          rpdName: mockCount.rpdName,
           hours: mockCount.hours,
           creditUnits: mockCount.creditUnits,
         });

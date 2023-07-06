@@ -38,6 +38,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $type = $params[0];
 @$id = (int)$params[1]; ///  можно ????
+@$rpdName = $_GET['rpdName'];
 
 $doc = new Document();
 $post = new Model\PostsModel();
@@ -56,8 +57,8 @@ if ($method === 'GET') {
     }
     //ОТПРАВКА С СЕРВЕРА ПОЛЯ ВЫБРАННОЙ ДЕСЦИПЛИНЫ
     if ($type === 'getDetail') {
-        if(isset($id)){
-            echo $post->getDetail($id);
+        if(isset($rpdName)){
+            echo $post->getDetail($rpdName);
         }
     }
     if ($type === 'getAllEducDirection') {
