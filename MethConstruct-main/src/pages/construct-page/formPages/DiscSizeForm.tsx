@@ -3,6 +3,7 @@ import { Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
 
 type TDiscSizeData = {
+  rpdName: string;
   hours: string;
   creditUnits: string;
 };
@@ -12,6 +13,7 @@ type TDiscSizeFormProps = TDiscSizeData & {
 };
 
 export function DiscSizeForm({
+  rpdName,
   hours,
   creditUnits,
   updateFields,
@@ -24,7 +26,6 @@ export function DiscSizeForm({
 
   async function fetchData() {
     try {
-      const rpdName = 'Физика'; // Здесь нужно указать фактическое значение параметра "rpdName"
       const url = `http://localhost/summerpractic/konstructor/api/getDetail?rpdName=${rpdName}`;
 
       const response = await fetch(url, {method: 'GET'});
