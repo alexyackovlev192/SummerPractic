@@ -56,14 +56,20 @@ if ($method === 'GET') {
     }
     //ОТПРАВКА С СЕРВЕРА ПОЛЯ ВЫБРАННОЙ ДЕСЦИПЛИНЫ
     if ($type === 'getDetail') {
-        if(isset($id)){
-            echo $post->getDetail($id);
+        if(isset($rpdName)){
+            echo $post->getDetail($rpdName);
         }
     }
     //ОТПРАВКА С СЕРВЕРА ВСЕХ ДИСЦИПЛИН
     if ($type === 'getAllDetail') {
         if(isset($id)){
             echo $post->getAllDetail($id);
+        }
+    }
+    //ОТПРАВКА С СЕРВЕРА ДИСЦИПЛИН с именем $rpdName 
+    if ($type === 'getDetailByrpdName') {
+        if(isset($id)){
+            echo $post->getDetailByrpdName($id);
         }
     }
     //ОТПРАВКА С СЕРВЕРА СПИСОК РПД
@@ -89,7 +95,7 @@ if ($method === 'GET') {
         }
     }
 
-    //ОТПРАВКА С СЕРВЕРА СПИСОК СВЗЯЕЙ
+    //ОТПРАВКА С СЕРВЕРА СПИСОК СВЯЗЕЙ
     if ($type === 'getConnections') {
         echo $post->getConnections();
     }
@@ -100,7 +106,6 @@ if ($method === 'GET') {
         echo $post->getList();
 
     }
-
 
 } elseif ($method === 'POST') {
     //ОТПРАВКА НА СЕРВЕР ФАЙЛА
@@ -114,7 +119,7 @@ if ($method === 'GET') {
         echo "\n ================= \n";
         echo $doc->insertData(); // заполняет в DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
         echo "\n ================= \n";
-        echo $post->createRpd();
+        echo $post->createRpd(); // Создание рпд
         echo "\n ================= \n";
     }
     //СОЗДАНИЕ РПД

@@ -1,7 +1,7 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
-import { TextField, Box } from "@mui/material";
+import React, {useEffect} from "react";
+import {Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
+import  postData from "../../postData.js"
 
 type TTitleData = {
   rpdName: string;
@@ -13,6 +13,7 @@ type TTitleData = {
 };
 
 type TTitleFormProps = TTitleData & {
+  
   updateFields: (fields: Partial<TTitleData>) => void;
 };
 
@@ -25,6 +26,33 @@ export function TitleForm({
   year,
   updateFields,
 }: TTitleFormProps) {
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // async function fetchData() {
+  //   try {
+  //     const data = await postData("http://localhost/summerpractic/konstructor/api/getRpd", "GET");
+  //     console.log(data);
+  //     if (data.length > 0) {
+  //       const mockTitle = data[0]; // Предполагаем, что данные находятся в первом элементе массива
+  //       console.log(mockTitle);
+  //       updateFields({
+  //         rpdName: mockTitle.rpdName,
+  //         direction: mockTitle.direction,
+  //         code: mockTitle.code,
+  //         educLvl: mockTitle.educLvl,
+  //         educForm: mockTitle.educForm,
+  //         year: mockTitle.year,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Ошибка при получении данных:", error);
+  //   }
+  // }
+
+
   return (
     <>
       <FormWrapper title="Титульный лист">
@@ -33,6 +61,7 @@ export function TitleForm({
             variant="body2"
             className="inputTypo"
             style={{ width: "70%" }}
+        
           >
             Название рабочей программы
           </Typography>
