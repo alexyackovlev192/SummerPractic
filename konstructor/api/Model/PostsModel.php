@@ -26,9 +26,23 @@ class PostsModel extends Database
      *
      * @return string
      */
+    public function getAllEducDirection(): string
+    {
+        $stmt = $this->select("SELECT DISTINCT direction, code, educlvl, year, educForm from `rpd`");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
+
+    /**
+     *
+     * Метод дает список всех дисциплин и их полей
+     *
+     * @return string
+     */
     public function getAllDetail(): string
     {
-        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl from `DETAIL`");
+        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl, educForm from `DETAIL`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);

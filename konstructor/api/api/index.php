@@ -60,6 +60,11 @@ if ($method === 'GET') {
             echo $post->getDetail($rpdName);
         }
     }
+    if ($type === 'getAllEducDirection') {
+        if(isset($id)){
+            echo $post->getAllEducDirection($id);
+        }
+    }
     //ОТПРАВКА С СЕРВЕРА ВСЕХ ДИСЦИПЛИН
     if ($type === 'getAllDetail') {
         if(isset($id)){

@@ -85,6 +85,21 @@ const Navbar: React.FC = () => {
             </Link>
             <Link
               style={{ textDecoration: "none", color: "inherit" }}
+              to="/desciplins"
+            >
+              <ListItemButton onClick={toggleDrawer}>
+                <ListItemIcon sx={{ minWidth: 0, paddingRight: "8px" }}>
+                  <TaskRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Дисциплины" />
+              </ListItemButton>
+            </Link>
+            <Link
+              style={{ textDecoration: "none", color: "inherit" }}
+              to="desciplins"
+            ></Link>
+            <Link
+              style={{ textDecoration: "none", color: "inherit" }}
               to="/working-programms"
             >
               <ListItemButton onClick={toggleDrawer}>
@@ -98,6 +113,7 @@ const Navbar: React.FC = () => {
               style={{ textDecoration: "none", color: "inherit" }}
               to="/working-programms"
             ></Link>
+            
             <Link
               style={{ textDecoration: "none", color: "inherit" }}
               to="/upload"
