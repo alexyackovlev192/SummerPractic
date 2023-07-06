@@ -56,8 +56,8 @@ if ($method === 'GET') {
     }
     //ОТПРАВКА С СЕРВЕРА ПОЛЯ ВЫБРАННОЙ ДЕСЦИПЛИНЫ
     if ($type === 'getDetail') {
-        if(isset($rpdName)){
-            echo $post->getDetail($rpdName);
+        if(isset($id)){
+            echo $post->getDetail($id);
         }
     }
     if ($type === 'getAllEducDirection') {

@@ -34,6 +34,7 @@ export function DiscSizeForm({
         console.log("===" + data);
         
         updateFields({
+          rpdName: mockCount.rpdName,
           hours: mockCount.hours,
           creditUnits: mockCount.creditUnits,
         });

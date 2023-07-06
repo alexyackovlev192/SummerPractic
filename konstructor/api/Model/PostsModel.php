@@ -489,7 +489,7 @@ class PostsModel extends Database
      */
     public function getDetail($rpdName)
     {
-        $stmt = $this->select("SELECT `hours`, `creditUnits`, `rpdName` FROM `DETAIL`  WHERE `rpdName` = $rpdName");
+        $stmt = $this->select("SELECT * FROM `DETAIL` WHERE `rpdName`=$rpdName");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();
