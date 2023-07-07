@@ -490,6 +490,10 @@ class PostsModel extends Database
      */
     public function updateRpd($id_rpd)
     {
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
 
         $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
         
@@ -506,7 +510,8 @@ class PostsModel extends Database
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->execute();
         $rowCount = $stmt->rowCount();
-        return "Rpd updated successfully";
+
+        return "Rpd updated successfully" ;
 
     }
 

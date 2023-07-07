@@ -115,6 +115,9 @@ export function DiscContentForm({
             <Alert severity="warning">Количество часов не сходится.</Alert>
           )}
           <Button onClick={addDiscSection}>Добавить раздел</Button>
+          <Typography sx={{ paddingTop: "16px", paddingBottom: "16px", fontWeight: "bold" }} variant="body2">
+            Общее количество часов на дисциплину: {hours}
+          </Typography>
           {discContentArray.map((discSection) => (
             <div key={discSection.id}>
               <div style={{ display: "flex", flexWrap: "wrap", textAlign: "center" }}>
@@ -135,9 +138,6 @@ export function DiscContentForm({
                     multiline
                     style={{ width: "100%" }}
                   />
-                  <Typography sx={{ paddingTop: "16px", paddingBottom: "16px", fontWeight: "bold" }} variant="body2">
-                    Общее количество часов на дисциплину: {hours}
-                  </Typography>
                 </div>
                 
                 <div style={{ width: "20%" }}>

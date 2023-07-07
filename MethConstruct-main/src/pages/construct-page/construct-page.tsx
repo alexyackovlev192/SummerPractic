@@ -17,8 +17,8 @@ import { DiscSizeForm } from "./formPages/DiscSizeForm";
 import { DiscContentForm } from "./formPages/DiscContentForm";
 import { EducMethSupportForm } from "./formPages/EducMethSupportForm";
 import { ResourceSupportForm } from "./formPages/ResourceSupportForm";
+import { useNavigate } from "react-router-dom";
 import "./construct-page.css";
-
 
 type TCompetency = {
   id: string;
@@ -225,12 +225,36 @@ const ConstructPage: React.FC = () => {
       <step.component {...data} updateFields={updateFields} /> // .component - элементы формы, (...data) - нужные данные
     ))
   );
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchRpd();
+  }, []);
+
+  async function fetchRpd() {
+    try {
+      const url = `http://localhost/summerpractic/konstructor/api/updateRpd?id_rpd=${formValues.ID}`;
+
+      const options = {
+        method: 'PATCH',
+        body: JSON.stringify(data) // Convert the formValues object to JSON
+      };
+      
+      const response = await fetch(url, options);
+      console.log(response);
+      
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+  
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isLastStep) return next();
-    console.log(data);
+    fetchRpd();
+    navigate("/working-programms");
   }
+
 
   return (
     <div className="construct-page">
