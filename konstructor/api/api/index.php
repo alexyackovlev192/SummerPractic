@@ -39,6 +39,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $type = $params[0];
 @$id = (int)$params[1]; ///  можно ????
 @$rpdName = $_GET['rpdName'];
+@$id_rpd = $_GET['id_rpd'];
 
 $doc = new Document();
 $post = new Model\PostsModel();
@@ -171,8 +172,8 @@ if ($method === 'GET') {
     
     //ОБНОВЛЯЕТ ПОЛЯ В ТАБЛИЦЕ RPD 
     if ($type === 'updateRpd') {
-        if(isset($id)){
-            echo $post->updateRpd($id);
+        if(isset($id_rpd)){
+            echo $post->updateRpd($id_rpd);
         }
     }
 
