@@ -229,19 +229,44 @@ const ConstructPage: React.FC = () => {
 
   useEffect(() => {
     fetchRpd();
+    fetchRazdel();
   }, []);
 
   async function fetchRpd() {
     try {
       const url = `http://localhost/summerpractic/konstructor/api/updateRpd?id_rpd=${formValues.ID}`;
-
       const options = {
         method: 'PATCH',
         body: JSON.stringify(data) // Convert the formValues object to JSON
       };
+      await fetch(url, options);
       
-      const response = await fetch(url, options);
-      console.log(response);
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+
+  async function fetchRazdel() {
+    try {
+      const response = await fetch(`http://localhost/summerpractic/konstructor/api/getCountRazdel?id_rpd=${formValues.ID}`, {method: 'GET'});
+      const count = await response.json();
+      console.log(count[0]);
+      if (count[0] > 0) {
+        const url = `http://localhost/summerpractic/konstructor/api/updateRazdel?id_rpd=${formValues.ID}`;
+        const options = {
+          method: 'PATCH',
+          body: JSON.stringify(data) // Convert the formValues object to JSON
+        };
+        await fetch(url, options);
+      }
+      else {
+        const url = `http://localhost/summerpractic/konstructor/api/addRazdel`;
+        const options = {
+          method: 'POST',
+          body: JSON.stringify(data) // Convert the formValues object to JSON
+        };
+        await fetch(url, options);
+      }
       
     } catch (error) {
       console.error("Ошибка при получении данных:", error);

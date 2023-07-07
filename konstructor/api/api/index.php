@@ -114,6 +114,13 @@ if ($method === 'GET') {
 
     }
 
+    //ОТПРАВКА С СЕРВЕРА РАЗДЕЛОВ
+    if ($type === 'getCountRazdel') {
+        if(isset($id)){
+            echo $post->getCountRazdel($id);
+        }
+    }
+
 } elseif ($method === 'POST') {
     //ОТПРАВКА НА СЕРВЕР ФАЙЛА
     if ($type === 'uploadFile') {
@@ -153,6 +160,12 @@ if ($method === 'GET') {
         echo $post->addInList();
 
     }
+    //СОЗДАТЬ РАЗДЕЛ
+    if ($type === 'addRazdel') {
+
+        echo $post->addRazdel();
+
+    }
 } elseif ($method === 'PATCH') {
 
     //ОБНОВЛЕНИЕ ЮЗЕРОВ ДАННЫХ В ТАБЛИЦЕ USERS
@@ -162,13 +175,19 @@ if ($method === 'GET') {
         }
     }
 
+    //ОБНОВЛЕНИЕ РАЗДЕЛОВ ДИСЦИПЛИН 
+    if ($type === 'updateRazdel') {
+        if(isset($id_rpd)){
+            echo $post->updateRazdel($id_rpd);
+        }
+    }
+
     //ОБНОВЛЯЕТ СВЯЗИ В ТАБЛИЦЕ DISP_USERS_CON
     if ($type === 'updateConnection') {
         if(isset($id)){
             echo $post->updateConnection($id);
         }
     }
-
     
     //ОБНОВЛЯЕТ ПОЛЯ В ТАБЛИЦЕ RPD 
     if ($type === 'updateRpd') {

@@ -512,7 +512,74 @@ class PostsModel extends Database
         $rowCount = $stmt->rowCount();
 
         return "Rpd updated successfully" ;
+    }
+    public function getCountRazdel($id_rpd)
+    {
+        $stmt = $this->select("SELECT COUNT(`id_rpd`),  `id_rpd` FROM `dics_razdels` WHERE `id_rpd`=$id_rpd");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
 
+    public function updateRazdel($id_rpd)
+    {
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
+
+        
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+        
+        $id_rpd = $data['id_rpd'];
+        $id_razdel = $data['id_razdel'];
+        $razdel_name = $data['razdel_name'];
+        $hours_lec = $data['hours_lec'];
+        $hours_sem = $data['hours_sem'];
+        $hours_lab = $data['hours_lab'];
+        $hours_krp = $data['hours_krp'];
+        $hours_samost = $data['hours_samost'];
+          
+        $stmt = $this->select("UPDATE `dics_razdels` SET `id_rpd`='$id_rpd',`id_razdel`='$id_razdel', `razdel_name`='$razdel_name', 
+    `hours_lec`='$hours_lec', `hours_sem`='$hours_sem', `hours_lab`='$hours_lab', `hours_krp`='$hours_krp', `hours_samost`='$hours_samost' WHERE `id_rpd`='$id_rpd'");
+
+        // Проверяем количество затронутых строк
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $rowCount = $stmt->rowCount();
+
+        return "Rpd updated successfully" ;
+    }
+
+
+    public function addRazdel()
+    {
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
+
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+        
+        $id_rpd = $data['id_rpd'];
+        $id_razdel = $data['id_razdel'];
+        $razdel_name = $data['razdel_name'];
+        $hours_lec = $data['hours_lec'];
+        $hours_sem = $data['hours_sem'];
+        $hours_lab = $data['hours_lab'];
+        $hours_krp = $data['hours_krp'];
+        $hours_samost = $data['hours_samost'];
+        
+        
+        $stmt = $this->select("INSERT INTO `dics_razdels`(`id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
+    VALUES ('$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost') WHERE `id_rpd`='$id_rpd'");
+    
+        // Проверяем количество затронутых строк
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $rowCount = $stmt->rowCount();
+
+        return "Rpd updated successfully" ;
     }
 
     /**
