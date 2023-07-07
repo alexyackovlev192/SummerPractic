@@ -42,7 +42,7 @@ class PostsModel extends Database
      */
     public function getAllDetail(): string
     {
-        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl, educForm from `DETAIL`");
+        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl, educForm, direction from `DETAIL`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);

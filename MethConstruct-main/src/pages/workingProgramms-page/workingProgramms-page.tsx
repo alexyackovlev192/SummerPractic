@@ -48,6 +48,9 @@ const WorkingProgramms: React.FC = () => {
     code: string;
     educLvl: string;
     authors: string;
+    educForm: string;
+    semester: string;
+    course: string
   };
   
   
@@ -91,7 +94,7 @@ const WorkingProgramms: React.FC = () => {
   };
   
   const modifiedMockRpd = mockRpd.map((item) => {
-    const { ID, rpdName, code, educLvl, surname, name, fName } = item;
+    const { ID, rpdName, code, educLvl, surname, name, fName,educForm, semester, course } = item;
     const authors = `${surname} ${name} ${fName}`;
   
     return {
@@ -100,6 +103,9 @@ const WorkingProgramms: React.FC = () => {
       code,
       educLvl,
       authors,
+      educForm,
+      semester,
+      course
     };
   });
 
@@ -230,6 +236,47 @@ const WorkingProgramms: React.FC = () => {
                         Уровень образования
                       </TableSortLabel>
                     </TableCell>
+                    <TableCell key="educForm">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "educForm"}
+                        direction={
+                          orderBy === "educForm" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "educForm")}
+                      >
+                        Форма
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    
+                    <TableCell key="course">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "course"}
+                        direction={
+                          orderBy === "course" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "course")}
+                      >
+                        № курса
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    <TableCell key="semester">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "semester"}
+                        direction={
+                          orderBy === "semester" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "semester")}
+                      >
+                        № семестра
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    
                     <TableCell key="authors">
                       <TableSortLabel
                         style={{ color: "white" }}
@@ -256,6 +303,10 @@ const WorkingProgramms: React.FC = () => {
                       <TableCell>{row.code}</TableCell>
                       <TableCell>{row.rpdName}</TableCell>
                       <TableCell>{row.educLvl}</TableCell>
+                      <TableCell>{row.educForm} </TableCell>
+                      <TableCell>{row.course} </TableCell>
+                      <TableCell>{row.semester} </TableCell>
+                      
                       <TableCell>{row.authors} </TableCell>
                       <TableCell>
                         <IconButton

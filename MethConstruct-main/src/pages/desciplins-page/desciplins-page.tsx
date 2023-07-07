@@ -33,7 +33,7 @@ const Directions: React.FC = () => {
   type TrowData = {
     ID: number;
     rpdName: string;
-    code: string;
+    direction: string;
     year: number;
     educlvl: string;
     educForm: string;
@@ -79,12 +79,12 @@ const Directions: React.FC = () => {
   };
 
   const modifiedMockDir = mockDir.map((item) => {
-    const { ID, rpdName, code, year, educlvl, educForm} = item;
+    const { ID, rpdName, direction, year, educlvl, educForm} = item;
   
     return {
       ID,
       rpdName,
-      code,
+      direction,
       year,
       educlvl,
       educForm
@@ -143,14 +143,14 @@ const Directions: React.FC = () => {
                         Дисциплина
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell key="code">
+                    <TableCell key="direction">
                       <TableSortLabel
                         style={{ color: "white" }}
-                        active={orderBy === "code"}
-                        direction={orderBy === "code" ? orderDirection : "asc"}
-                        onClick={(event) => handleRequestSort(event, "code")}
+                        active={orderBy === "direction"}
+                        direction={orderBy === "direction" ? orderDirection : "asc"}
+                        onClick={(event) => handleRequestSort(event, "direction")}
                       >
-                        Код направления
+                       Направление
                       </TableSortLabel>
                     </TableCell>
                     <TableCell key="year">
@@ -200,7 +200,7 @@ const Directions: React.FC = () => {
                   .map((row, index) => (
                     <TableRow key={index}>
                       <TableCell>{row.rpdName}</TableCell>
-                      <TableCell>{row.code}</TableCell>
+                      <TableCell>{row.direction}</TableCell>
                       <TableCell>{row.year}</TableCell>
                       <TableCell>{row.educForm}</TableCell>
                       <TableCell>{row.educlvl}</TableCell>
