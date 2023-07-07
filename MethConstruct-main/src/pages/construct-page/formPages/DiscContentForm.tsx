@@ -31,6 +31,7 @@ export function DiscContentForm({
     setDiscContentArray(discSections);
   }, [discSections]);
 
+  console.log(hours);
   let idNum = 1;
   const discNum = () => {
     return idNum++;
@@ -104,12 +105,13 @@ export function DiscContentForm({
   };
 
   const totalHours = countTotalHours();
+  console.log(parseInt(hours));
 
   return (
     <div style={{ width: "95%" }}>
       <FormWrapper title="Разделы дисциплины">
         <Box display="flex" flexDirection="column" alignItems="center">
-          {buttonChecker && parseInt(hours) != totalHours && (
+          {buttonChecker && parseInt(hours) !== totalHours && (
             <Alert severity="warning">Колличество часов не сходится</Alert>
           )}
           <Button onClick={addDiscSection}>Добавить раздел</Button>

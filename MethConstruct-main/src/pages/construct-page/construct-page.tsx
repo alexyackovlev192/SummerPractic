@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Box, FormControl } from "@mui/material";
@@ -88,6 +88,7 @@ type TFormData = {
 const ConstructPage: React.FC = () => {
   const location = useLocation();
   const formValues = location.state?.formValues || {};
+
   const INITIAL_DATA: TFormData = {
     // Инициализация полей формы
     id: formValues.ID,
@@ -128,6 +129,35 @@ const ConstructPage: React.FC = () => {
       disabled: formValues.TReqLogistics?.disabled || "",
     },
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const url = `http://localhost/summerpractic/konstructor/api/getDetail?rpdName=${formValues.rpdName}`;
+
+      const response = await fetch(url, {method: 'GET'});
+      const data = await response.json();
+      console.log(data);
+      
+      if (data.status === false) {
+        console.log(data.message);
+      } else if (data.length > 0) {
+        const mockCount = data[0]; // Предполагаем, что данные находятся в первом элементе массива
+        
+        console.log(data);
+        
+        updateFields({
+          hours: mockCount.hours,
+          creditUnits: mockCount.creditUnits,
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+
 
   const [hours, setHours] = useState("");
   const [data, setData] = useState(INITIAL_DATA);
