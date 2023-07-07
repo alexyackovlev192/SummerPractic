@@ -36,7 +36,7 @@ export function AgreementForm({
         <TextField
           // required
           id="outlined"
-          disabled
+          //disabled
           variant="outlined"
           value={protocol}
           onChange={(e) => updateFields({ protocol: e.target.value })}
@@ -52,7 +52,7 @@ export function AgreementForm({
         </Typography>
         <TextField
           // required
-          disabled
+          //disabled
           id="outlined"
           variant="outlined"
           value={date}
@@ -68,7 +68,7 @@ export function AgreementForm({
         </Typography>
         <TextField
           // required
-          disabled
+          //disabled
           variant="outlined"
           id="outlined"
           value={surname}
@@ -84,7 +84,7 @@ export function AgreementForm({
         </Typography>
         <TextField
           // required
-          disabled
+          //disabled
           id="outlined"
           variant="outlined"
           value={name}
@@ -99,7 +99,7 @@ export function AgreementForm({
           Отчество эксперта
         </Typography>
         <TextField
-          disabled
+          //disabled
           // required
           id="outlined"
           variant="outlined"

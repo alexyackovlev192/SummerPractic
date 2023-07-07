@@ -168,6 +168,14 @@ if ($method === 'GET') {
         }
     }
 
+    
+    //ОБНОВЛЯЕТ ПОЛЯ В ТАБЛИЦЕ RPD 
+    if ($type === 'updateRpd') {
+        if(isset($id)){
+            echo $post->updateRpd($id);
+        }
+    }
+
 } elseif ($method === 'DELETE') {
 
     //УДАЛЕНИЕ ЮЗЕРА ИЗ USERS

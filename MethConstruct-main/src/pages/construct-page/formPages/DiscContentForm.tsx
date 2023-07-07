@@ -31,7 +31,6 @@ export function DiscContentForm({
     setDiscContentArray(discSections);
   }, [discSections]);
 
-  console.log(hours);
   let idNum = 1;
   const discNum = () => {
     return idNum++;
@@ -94,6 +93,7 @@ export function DiscContentForm({
         contactHours = "",
         selfHours = "",
       } = fieldValuesForSection;
+
       totalHours +=
         Number(lectureHours) +
         Number(semHours) +

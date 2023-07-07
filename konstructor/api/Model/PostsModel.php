@@ -483,6 +483,25 @@ class PostsModel extends Database
     }
 
 
+    public function updateRpd($id)
+    {
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+
+        $goals = $data['goals'];
+        $tasks = $data['tasks'];
+        $objectives = $data['objectives'];
+        $hours = $data['hours'];
+        $creditUnits = $data['creditUnits'];
+
+
+        $stmt = $this->select("UPDATE `rpd` SET `goals`='$goals',`tasks`='$tasks',`objectives`='$objectives', `hours`='$hours',`creditUnits`='$creditUnits' WHERE `ID`='$id'");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return "updateRpd done - ";
+
+    
+
     /**
      * @param $id
      * @return false|string

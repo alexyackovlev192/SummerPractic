@@ -1,8 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
-import { TextField, Box, Select, MenuItem } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
-import  postData from "../../postData.js"
 
 type TOpopPlaceData = {
   disciplinePlace: string;

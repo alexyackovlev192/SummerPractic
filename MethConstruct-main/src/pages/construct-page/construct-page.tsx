@@ -16,7 +16,6 @@ import { CompetencyForm } from "./formPages/CompetencyForm";
 import { DiscSizeForm } from "./formPages/DiscSizeForm";
 import { DiscContentForm } from "./formPages/DiscContentForm";
 import { EducMethSupportForm } from "./formPages/EducMethSupportForm";
-// import { EvaluationFundForm } from "./formPages/EvaluationFundForm";
 import { ResourceSupportForm } from "./formPages/ResourceSupportForm";
 import "./construct-page.css";
 
@@ -275,7 +274,7 @@ const ConstructPage: React.FC = () => {
                       </Button>
                     )}
                     {
-                      <Button type="submit" variant="outlined">
+                      <Button type="submit" variant="outlined" >
                         {isLastStep ? "Закончить" : "Вперед"}
                       </Button>
                     }
