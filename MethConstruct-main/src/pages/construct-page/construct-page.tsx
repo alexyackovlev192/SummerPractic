@@ -139,14 +139,12 @@ const ConstructPage: React.FC = () => {
 
       const response = await fetch(url, {method: 'GET'});
       const data = await response.json();
-      console.log(data);
       
       if (data.status === false) {
         console.log(data.message);
       } else if (data.length > 0) {
         const mockCount = data[0]; // Предполагаем, что данные находятся в первом элементе массива
         
-        console.log(data);
         
         updateFields({
           hours: mockCount.hours,

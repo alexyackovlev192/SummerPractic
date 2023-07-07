@@ -112,7 +112,7 @@ export function DiscContentForm({
       <FormWrapper title="Разделы дисциплины">
         <Box display="flex" flexDirection="column" alignItems="center">
           {buttonChecker && parseInt(hours) !== totalHours && (
-            <Alert severity="warning">Колличество часов не сходится</Alert>
+            <Alert severity="warning">Количество часов не сходится.</Alert>
           )}
           <Button onClick={addDiscSection}>Добавить раздел</Button>
           {discContentArray.map((discSection) => (
@@ -135,7 +135,11 @@ export function DiscContentForm({
                     multiline
                     style={{ width: "100%" }}
                   />
+                  <Typography sx={{ paddingTop: "16px", paddingBottom: "16px", fontWeight: "bold" }} variant="body2">
+                    Общее количество часов на дисциплину: {hours}
+                  </Typography>
                 </div>
+                
                 <div style={{ width: "20%" }}>
                   <Typography variant="body2" className="inputTypo">
                     Часов на лекции:
@@ -245,8 +249,8 @@ export function DiscContentForm({
               </div>
             </div>
           ))}
-          <Typography sx={{ paddingTop: "16px" }} variant="body2">
-            Общее колличество введенных часов: {totalHours}
+          <Typography sx={{ paddingTop: "16px", fontWeight: "bold" }} variant="body2">
+            Общее количество введенных часов: {totalHours}
           </Typography>
         </Box>
       </FormWrapper>
