@@ -492,7 +492,6 @@ class PostsModel extends Database
     {
 
         $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
-        echo $id_rpd;
         
         $goals = $data['goals'];
         $tasks = $data['tasks'];
@@ -501,11 +500,13 @@ class PostsModel extends Database
         $creditUnits = $data['creditUnits'];
         
       
-        $sql = "UPDATE `rpd` SET `goals`='$goals',`tasks`='$tasks',`objectives`='$objectives', `hours`='$hours',`creditUnits`='$creditUnits' WHERE `ID`=$id_rpd";
-        $stmt = $this->select($sql);
+        $stmt = $this->select("UPDATE `rpd` SET `goals`='$goals',`tasks`='$tasks',`objectives`='$objectives', `hours`='$hours',`creditUnits`='$creditUnits' WHERE `ID`='$id_rpd'");
         
+        // Проверяем количество затронутых строк
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return "update_done -";
+        $stmt->execute();
+        $rowCount = $stmt->rowCount();
+        return "Rpd updated successfully";
 
     }
 
