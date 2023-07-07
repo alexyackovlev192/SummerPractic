@@ -104,8 +104,6 @@ export function DiscContentForm({
   };
 
   const totalHours = countTotalHours();
-  console.log(totalHours);
-  console.log(hours);
 
   return (
     <div style={{ width: "95%" }}>
@@ -117,7 +115,7 @@ export function DiscContentForm({
           <Button onClick={addDiscSection}>Добавить раздел</Button>
           {discContentArray.map((discSection) => (
             <div key={discSection.id}>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", textAlign: "center" }}>
                 <div style={{ width: "100%" }}>
                   <Typography variant="body2" className="inputTypo">
                     Раздел {discNum()}
@@ -150,7 +148,11 @@ export function DiscContentForm({
                       discSection.id,
                       "lectureHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -167,7 +169,11 @@ export function DiscContentForm({
                       discSection.id,
                       "semHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -184,7 +190,11 @@ export function DiscContentForm({
                       discSection.id,
                       "labHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -201,7 +211,11 @@ export function DiscContentForm({
                       discSection.id,
                       "contactHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -218,7 +232,12 @@ export function DiscContentForm({
                       discSection.id,
                       "selfHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                      
+                   }}
                   />
                 </div>
               </div>

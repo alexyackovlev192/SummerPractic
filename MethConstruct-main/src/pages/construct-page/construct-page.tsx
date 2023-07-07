@@ -160,7 +160,7 @@ const ConstructPage: React.FC = () => {
     {
       component: DiscContentForm,
       title: "Разделы дисциплины",
-      hours: data.hours,
+      hours: data.hours, // Сумма часов
     },
     {
       component: EducMethSupportForm,
