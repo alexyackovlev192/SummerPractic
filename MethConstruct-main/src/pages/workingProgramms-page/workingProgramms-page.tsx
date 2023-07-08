@@ -34,7 +34,7 @@ const WorkingProgramms: React.FC = () => {
   async function fetchData() {
     try {
       const data = await postData("http://localhost/summerpractic/konstructor/api/getAllRpd", "GET");
-      console.log(data);
+      //console.log(data);
       setMockRpd(data);
       
     } catch (error) {
@@ -167,7 +167,7 @@ const WorkingProgramms: React.FC = () => {
   const handleRpdEdit = (id: string) => {
     const targetRpd = mockRpd.find((rpd: any) => String(rpd.ID) === id);
     const targetRpdObject = Object.create(Object.prototype, Object.getOwnPropertyDescriptors(targetRpd));
-    console.log("targetRpdObject " + targetRpdObject);
+    //console.log("targetRpdObject " + targetRpdObject);
     if (targetRpd) {
       navigate("/constructor", { state: { formValues: targetRpdObject }});
     } else {

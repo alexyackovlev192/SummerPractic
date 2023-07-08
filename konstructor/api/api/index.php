@@ -162,9 +162,9 @@ if ($method === 'GET') {
     }
     //СОЗДАТЬ РАЗДЕЛ
     if ($type === 'addRazdel') {
-
-        echo $post->addRazdel();
-
+        if(isset($id_rpd)){
+            echo $post->addRazdel($id_rpd);
+        }
     }
 } elseif ($method === 'PATCH') {
 

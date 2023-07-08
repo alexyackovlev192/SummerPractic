@@ -227,11 +227,6 @@ const ConstructPage: React.FC = () => {
   );
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchRpd();
-    fetchRazdel();
-  }, []);
-
   async function fetchRpd() {
     try {
       const url = `http://localhost/summerpractic/konstructor/api/updateRpd?id_rpd=${formValues.ID}`;
@@ -257,15 +252,18 @@ const ConstructPage: React.FC = () => {
           method: 'PATCH',
           body: JSON.stringify(data) // Convert the formValues object to JSON
         };
+        console.log("Update");
         await fetch(url, options);
       }
       else {
-        const url = `http://localhost/summerpractic/konstructor/api/addRazdel`;
+        const url = `http://localhost/summerpractic/konstructor/api/addRazdel?id_rpd=${formValues.ID}`;
         const options = {
           method: 'POST',
           body: JSON.stringify(data) // Convert the formValues object to JSON
         };
+        
         await fetch(url, options);
+        console.log("Insert");
       }
       
     } catch (error) {
@@ -277,6 +275,7 @@ const ConstructPage: React.FC = () => {
     e.preventDefault();
     if (!isLastStep) return next();
     fetchRpd();
+    fetchRazdel();
     navigate("/working-programms");
   }
 

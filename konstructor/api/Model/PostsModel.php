@@ -531,14 +531,15 @@ class PostsModel extends Database
         
         $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
         
-        $id_rpd = $data['id_rpd'];
-        $id_razdel = $data['id_razdel'];
-        $razdel_name = $data['razdel_name'];
-        $hours_lec = $data['hours_lec'];
-        $hours_sem = $data['hours_sem'];
-        $hours_lab = $data['hours_lab'];
-        $hours_krp = $data['hours_krp'];
-        $hours_samost = $data['hours_samost'];
+        
+        $id_razdel = $data['id'];
+        $razdel_name = $data['discSection'];
+        $hours_lec = $data['lectureHours'];
+        $hours_sem = $data['semHours'];
+        $hours_lab = $data['labHours'];
+        $hours_krp = $data['contactHours'];
+        $hours_samost = $data['selfHours'];
+
           
         $stmt = $this->select("UPDATE `dics_razdels` SET `id_rpd`='$id_rpd',`id_razdel`='$id_razdel', `razdel_name`='$razdel_name', 
     `hours_lec`='$hours_lec', `hours_sem`='$hours_sem', `hours_lab`='$hours_lab', `hours_krp`='$hours_krp', `hours_samost`='$hours_samost' WHERE `id_rpd`='$id_rpd'");
@@ -552,7 +553,7 @@ class PostsModel extends Database
     }
 
 
-    public function addRazdel()
+    public function addRazdel($id_rpd)
     {
         $jsonString = file_get_contents("php://input");
         if (empty($jsonString)) {
@@ -561,18 +562,27 @@ class PostsModel extends Database
 
         $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
         
-        $id_rpd = $data['id_rpd'];
-        $id_razdel = $data['id_razdel'];
-        $razdel_name = $data['razdel_name'];
-        $hours_lec = $data['hours_lec'];
-        $hours_sem = $data['hours_sem'];
-        $hours_lab = $data['hours_lab'];
-        $hours_krp = $data['hours_krp'];
-        $hours_samost = $data['hours_samost'];
+
+        $id_razdel = $data['id'];
+        $razdel_name = $data['discSection'];
+        $hours_lec = $data['lectureHours'];
+        $hours_sem = $data['semHours'];
+        $hours_lab = $data['labHours'];
+        $hours_krp = $data['contactHours'];
+        $hours_samost = $data['selfHours'];
+
+        // $id_razdel = $data['id'];
+        // $razdel_name = isset($data['discSection']) ? $data['discSection'] : '';
+        // $hours_lec = isset($data['lectureHours']) ? $data['lectureHours'] : '';
+        // $hours_sem = isset($data['semHours']) ? $data['semHours'] : '';
+        // $hours_lab = isset($data['labHours']) ? $data['labHours'] : '';
+        // $hours_krp = isset($data['contactHours']) ? $data['contactHours'] : '';
+        // $hours_samost = isset($data['selfHours']) ? $data['selfHours'] : '';
         
+        echo $id_rpd,  $razdel_name;
         
-        $stmt = $this->select("INSERT INTO `dics_razdels`(`id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
-    VALUES ('$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost') WHERE `id_rpd`='$id_rpd'");
+        $stmt = $this->select("INSERT INTO `dics_razdels`(`id`, `id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
+    VALUES (NULL, '$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost')");
     
         // Проверяем количество затронутых строк
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
