@@ -38,7 +38,7 @@ export function DiscContentForm({
 
   const addDiscSection = () => {
     const newDiscSection: TDiscContent = {
-      id: Date.now(),
+      id: idNum,
       discSection: "",
       lectureHours: "",
       semHours: "",

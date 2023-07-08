@@ -562,34 +562,39 @@ class PostsModel extends Database
 
         $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
         
+        $discSections = $data['discSections'];
 
-        $id_razdel = $data['id'];
-        $razdel_name = $data['discSection'];
-        $hours_lec = $data['lectureHours'];
-        $hours_sem = $data['semHours'];
-        $hours_lab = $data['labHours'];
-        $hours_krp = $data['contactHours'];
-        $hours_samost = $data['selfHours'];
 
-        // $id_razdel = $data['id'];
-        // $razdel_name = isset($data['discSection']) ? $data['discSection'] : '';
-        // $hours_lec = isset($data['lectureHours']) ? $data['lectureHours'] : '';
-        // $hours_sem = isset($data['semHours']) ? $data['semHours'] : '';
-        // $hours_lab = isset($data['labHours']) ? $data['labHours'] : '';
-        // $hours_krp = isset($data['contactHours']) ? $data['contactHours'] : '';
-        // $hours_samost = isset($data['selfHours']) ? $data['selfHours'] : '';
+        foreach ($discSections as $section) { //Выводит только первый раздел, необходимо пофиксить на стороне фронта
+            $id_razdel = $section['id'];
+            $razdel_name = $section['discSection'];
+            $hours_lec = $section['lectureHours'];
+            $hours_sem = $section['semHours'];
+            $hours_lab = $section['labHours'];
+            $hours_krp = $section['contactHours'];
+            $hours_samost = $section['selfHours'];
         
-        echo $id_rpd,  $razdel_name;
+            // Далее можно использовать полученные значения
+            // Пример использования значений
+            echo $id_razdel;
+            echo $razdel_name;
+            echo $hours_lec;
+            echo $hours_sem;
+            echo $hours_lab;
+            echo $hours_krp;
+            echo $hours_samost;
+
+            $stmt = $this->select("INSERT INTO `dics_razdels`(`id`, `id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
+        VALUES (NULL, '$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost')");
         
-        $stmt = $this->select("INSERT INTO `dics_razdels`(`id`, `id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
-    VALUES (NULL, '$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost')");
+            // Проверяем количество затронутых строк
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->execute();
+            $rowCount = $stmt->rowCount();
     
-        // Проверяем количество затронутых строк
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->execute();
-        $rowCount = $stmt->rowCount();
+            return "Rpd updated successfully" ;
 
-        return "Rpd updated successfully" ;
+        }
     }
 
     /**
