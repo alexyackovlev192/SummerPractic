@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
 
 type TEducMethSupportData = {
-  supportList: string;
+  fundList: string;
 };
 
 type TEducMethSupportFormProps = TEducMethSupportData & {
@@ -11,7 +11,7 @@ type TEducMethSupportFormProps = TEducMethSupportData & {
 };
 
 export function EducMethSupportForm({
-  supportList,
+  fundList,
 
   updateFields,
 }: TEducMethSupportFormProps) {
@@ -29,8 +29,9 @@ export function EducMethSupportForm({
           <TextField
             id="creditUnits"
             multiline
-            value={supportList}
-            onChange={(e) => updateFields({ supportList: e.target.value })}
+            disabled
+            value={fundList}
+            onChange={(e) => updateFields({ fundList: e.target.value })}
             style={{ width: "95%" }}
           />
         </Box>

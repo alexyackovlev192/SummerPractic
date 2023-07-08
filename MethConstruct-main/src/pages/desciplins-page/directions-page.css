@@ -1,6 +1,4 @@
-
-.upload-page{
-
+.educ-page{
     display: flex;
     justify-content: center;
     align-items: right;
@@ -8,14 +6,10 @@
     padding: 20px;
     
 }
-
-
-.formcentr{
-    display: flex;
-    
-    align-items: right;
-    
+.dataTable{
+    padding: 20px;
 }
 .planText{
     margin-bottom: 16px !important;
 }
+

@@ -22,7 +22,7 @@ const Directions: React.FC = () => {
 
   async function fetchData() {
     try {
-      const data = await postData("http://localhost/summerpractic/konstructor/api/getAllEducDirection", "GET");
+      const data = await postData("http://localhost/summerpractic/konstructor/api/getAllDetail", "GET");
       setMockDir(data);
     } catch (error) {
       console.error("Ошибка при получении данных:", error);
@@ -31,14 +31,12 @@ const Directions: React.FC = () => {
 
 
   type TrowData = {
-    
+    ID: number;
+    rpdName: string;
     direction: string;
-    code: string;
+    year: number;
     educlvl: string;
     educForm: string;
-    year: number;
-    
-   
   };
   
   type TOrder = "asc" | "desc";
@@ -81,15 +79,15 @@ const Directions: React.FC = () => {
   };
 
   const modifiedMockDir = mockDir.map((item) => {
-    const {direction,  code, educlvl, educForm, year} = item;
+    const { ID, rpdName, direction, year, educlvl, educForm} = item;
   
     return {
+      ID,
+      rpdName,
       direction,
-      code,
+      year,
       educlvl,
-      educForm,
-      year
-      
+      educForm
     };
   });
 
@@ -123,7 +121,7 @@ const Directions: React.FC = () => {
     <div className="educ-page">
       <div className="padClass">
         <Typography className="planText" variant="h5">
-          Направления
+          Дисциплины
         </Typography>
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%" }}>
@@ -131,53 +129,28 @@ const Directions: React.FC = () => {
               <Table>
                 <TableHead style={{ backgroundColor: "#1D51A3" }}>
                   <TableRow>
+                    <TableCell key="rpdName">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "rpdName"}
+                        direction={
+                          orderBy === "rpdName" ? orderDirection : "asc"
+                        }
+                        onClick={(event) =>
+                          handleRequestSort(event, "rpdName")
+                        }
+                      >
+                        Дисциплина
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell key="direction">
                       <TableSortLabel
                         style={{ color: "white" }}
                         active={orderBy === "direction"}
-                        direction={
-                          orderBy === "direction" ? orderDirection : "asc"
-                        }
-                        onClick={(event) =>
-                          handleRequestSort(event, "direction")
-                        }
+                        direction={orderBy === "direction" ? orderDirection : "asc"}
+                        onClick={(event) => handleRequestSort(event, "direction")}
                       >
-                        Направление
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell key="code">
-                      <TableSortLabel
-                        style={{ color: "white" }}
-                        active={orderBy === "code"}
-                        direction={orderBy === "code" ? orderDirection : "asc"}
-                        onClick={(event) => handleRequestSort(event, "code")}
-                      >
-                        Код направления
-                      </TableSortLabel>
-                    </TableCell>
-                    
-                    <TableCell key="educlvl">
-                      <TableSortLabel
-                        style={{ color: "white" }}
-                        active={orderBy === "educlvl"}
-                        direction={
-                          orderBy === "educlvl" ? orderDirection : "asc"
-                        }
-                        onClick={(event) => handleRequestSort(event, "educlvl")}
-                      >
-                        Уровень
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell key="educlvl">
-                      <TableSortLabel
-                        style={{ color: "white" }}
-                        active={orderBy === "educForm"}
-                        direction={
-                          orderBy === "educForm" ? orderDirection : "asc"
-                        }
-                        onClick={(event) => handleRequestSort(event, "educForm")}
-                      >
-                        Форма
+                       Направление
                       </TableSortLabel>
                     </TableCell>
                     <TableCell key="year">
@@ -189,9 +162,34 @@ const Directions: React.FC = () => {
                         }
                         onClick={(event) => handleRequestSort(event, "year")}
                       >
-                        Год набора
+                        Год
                       </TableSortLabel>
                     </TableCell>
+                    <TableCell key="educlvl">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "educlvl"}
+                        direction={
+                          orderBy === "educlvl" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "educlvl")}
+                      >
+                        Форма
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell key="educForm">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "educForm"}
+                        direction={
+                          orderBy === "educForm" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "educForm")}
+                      >
+                        Уровень
+                      </TableSortLabel>
+                    </TableCell>
+                    
                   </TableRow>
                 </TableHead>
                 {sortedRowInformation(
@@ -201,12 +199,12 @@ const Directions: React.FC = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
+                      <TableCell>{row.rpdName}</TableCell>
                       <TableCell>{row.direction}</TableCell>
-                      <TableCell>{row.code}</TableCell>
-                   
-                      <TableCell>{row.educlvl}</TableCell>
-                      <TableCell>{row.educForm}</TableCell>
                       <TableCell>{row.year}</TableCell>
+                      <TableCell>{row.educForm}</TableCell>
+                      <TableCell>{row.educlvl}</TableCell>
+                      
                                                                   
                     </TableRow>
                   ))}

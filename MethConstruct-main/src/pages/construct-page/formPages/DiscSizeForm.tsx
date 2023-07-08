@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography, TextField, Box } from "@mui/material";
 import { FormWrapper } from "./FormWrapper";
 
@@ -16,6 +16,7 @@ export function DiscSizeForm({
   creditUnits,
   updateFields,
 }: TDiscSizeFormProps) {
+
   return (
     <div style={{ width: "95%" }}>
       <FormWrapper title="Объем дисциплины">
@@ -30,11 +31,8 @@ export function DiscSizeForm({
           <TextField
             id="creditUnits"
             value={creditUnits}
-            onChange={(e) => {
-              const value = e.target.value;
-              const hours = (parseInt(value) * 60).toString() || "";
-              updateFields({ creditUnits: value, hours: hours });
-            }}
+            disabled
+            onChange={(e) => updateFields({ creditUnits: e.target.value })}
             style={{ width: "95%" }}
           />
           <Typography
@@ -48,6 +46,7 @@ export function DiscSizeForm({
             id="hours"
             value={hours}
             disabled
+            onChange={(e) => updateFields({ hours: e.target.value })}
             style={{ width: "95%" }}
           />
         </Box>

@@ -1,4 +1,4 @@
-import React, { useState, ReactElement, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Box, FormControl } from "@mui/material";
@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import { v4 as uuidv4 } from "uuid";
 import { useLocation } from "react-router-dom";
 import { TitleForm } from "./formPages/TitleForm";
 import { AgreementForm } from "./formPages/AgreementForm";
@@ -17,11 +16,9 @@ import { CompetencyForm } from "./formPages/CompetencyForm";
 import { DiscSizeForm } from "./formPages/DiscSizeForm";
 import { DiscContentForm } from "./formPages/DiscContentForm";
 import { EducMethSupportForm } from "./formPages/EducMethSupportForm";
-import { EvaluationFundForm } from "./formPages/EvaluationFundForm";
 import { ResourceSupportForm } from "./formPages/ResourceSupportForm";
-
+import { useNavigate } from "react-router-dom";
 import "./construct-page.css";
-const uuid = () => Math.random().toString(36).slice(-6);
 
 type TCompetency = {
   id: string;
@@ -54,7 +51,7 @@ type TDiscContent = {
 };
 
 type TFormData = {
-  rpdId: string;
+  id: string;
   rpdName: string;
   direction: string;
   code: string;
@@ -93,7 +90,7 @@ const ConstructPage: React.FC = () => {
 
   const INITIAL_DATA: TFormData = {
     // Инициализация полей формы
-    rpdId: uuid(),
+    id: formValues.ID,
     rpdName: formValues.rpdName,
     direction: formValues.direction,
     code: formValues.code,
@@ -131,9 +128,37 @@ const ConstructPage: React.FC = () => {
       disabled: formValues.TReqLogistics?.disabled || "",
     },
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const url = `http://localhost/summerpractic/konstructor/api/getDetail?rpdName=${formValues.rpdName}`;
+
+      const response = await fetch(url, {method: 'GET'});
+      const data = await response.json();
+      
+      if (data.status === false) {
+        console.log(data.message);
+      } else if (data.length > 0) {
+        const mockCount = data[0]; // Предполагаем, что данные находятся в первом элементе массива
+        
+        
+        updateFields({
+          hours: mockCount.hours,
+          creditUnits: mockCount.creditUnits,
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+
 
   const [hours, setHours] = useState("");
   const [data, setData] = useState(INITIAL_DATA);
+
   const steps = [
     {
       component: TitleForm,
@@ -162,7 +187,7 @@ const ConstructPage: React.FC = () => {
     {
       component: DiscContentForm,
       title: "Разделы дисциплины",
-      hours: data.hours,
+      hours: data.hours, // Сумма часов
     },
     {
       component: EducMethSupportForm,
@@ -200,12 +225,60 @@ const ConstructPage: React.FC = () => {
       <step.component {...data} updateFields={updateFields} /> // .component - элементы формы, (...data) - нужные данные
     ))
   );
+  const navigate = useNavigate();
 
+  async function fetchRpd() {
+    try {
+      const url = `http://localhost/summerpractic/konstructor/api/updateRpd?id_rpd=${formValues.ID}`;
+      const options = {
+        method: 'PATCH',
+        body: JSON.stringify(data) // Convert the formValues object to JSON
+      };
+      await fetch(url, options);
+      
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+
+  async function fetchRazdel() {
+    try {
+      const response = await fetch(`http://localhost/summerpractic/konstructor/api/getCountRazdel?id_rpd=${formValues.ID}`, {method: 'GET'});
+      const count = await response.json();
+      console.log(count[0]);
+      if (count[0] > 0) {
+        const url = `http://localhost/summerpractic/konstructor/api/updateRazdel?id_rpd=${formValues.ID}`;
+        const options = {
+          method: 'PATCH',
+          body: JSON.stringify(data) // Convert the formValues object to JSON
+        };
+        console.log("Update");
+        await fetch(url, options);
+      }
+      else {
+        const url = `http://localhost/summerpractic/konstructor/api/addRazdel?id_rpd=${formValues.ID}`;
+        const options = {
+          method: 'POST',
+          body: JSON.stringify(data) // Convert the formValues object to JSON
+        };
+        
+        await fetch(url, options);
+        console.log("Insert");
+      }
+      
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
+  
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!isLastStep) return next();
-    console.log(data);
+    fetchRpd();
+    fetchRazdel();
+    navigate("/working-programms");
   }
+
 
   return (
     <div className="construct-page">
@@ -249,7 +322,7 @@ const ConstructPage: React.FC = () => {
                       </Button>
                     )}
                     {
-                      <Button type="submit" variant="outlined">
+                      <Button type="submit" variant="outlined" >
                         {isLastStep ? "Закончить" : "Вперед"}
                       </Button>
                     }

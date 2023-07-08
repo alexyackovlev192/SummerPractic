@@ -26,9 +26,23 @@ class PostsModel extends Database
      *
      * @return string
      */
+    public function getAllEducDirection(): string
+    {
+        $stmt = $this->select("SELECT DISTINCT direction, code, educlvl, year, educForm from `rpd`");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
+
+    /**
+     *
+     * Метод дает список всех дисциплин и их полей
+     *
+     * @return string
+     */
     public function getAllDetail(): string
     {
-        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl from `DETAIL`");
+        $stmt = $this->select("SELECT ID, rpdName, code, year, educlvl, educForm, direction from `DETAIL`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
@@ -420,7 +434,7 @@ class PostsModel extends Database
      */
     public function getRpd($id)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD`");
+        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `ID`, `rpdName`, `direction`, `code`, `educLvl`, `educForm`, `year`, `protocol`, `date`, `surname`, `name`, `fName`, `goals`, `tasks`, `objectives`, `disciplinePlace`, `semester`, `course`, `competencies`, `hours`, `creditUnits`, `sectionsTopics`, `smthElse`, `supportList`, `fundList`, `literatureList`, `periodicalsList`, `internetResList`, `infoTechResList`, `profDataInfList`, `reqSoftwareList`, `TReqLogistics` FROM `RPD` WHERE `ID` = $id");
         $stmt->execute();
         $stmt2 = $this->select("SELECT FOUND_ROWS()");
         $stmt2->execute();
@@ -458,11 +472,12 @@ class PostsModel extends Database
     }
 
     /**
+     * @param $id
      * @return false|string
      */
     public function getAllRpd()
     {
-        $stmt = $this->select("SELECT ID, code, rpdNAME, educLvl , surname FROM `RPD`");
+        $stmt = $this->select("SELECT * FROM `RPD`");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
@@ -473,27 +488,137 @@ class PostsModel extends Database
      * @param $id
      * @return false|string
      */
-    public function getDetail($id)
+    public function updateRpd($id_rpd)
     {
-        $stmt = $this->select("SELECT SQL_CALC_FOUND_ROWS `NAME` FROM `DETAIL` WHERE DES_ID = '$id'");
-        $stmt->execute();
-        $stmt2 = $this->select("SELECT FOUND_ROWS()");
-        $stmt2->execute();
-        $row_count =$stmt2->fetchColumn();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
 
-        if($row_count === 0){
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+        
+        $goals = $data['goals'];
+        $tasks = $data['tasks'];
+        $objectives = $data['objectives'];
+        $hours = $data['hours'];
+        $creditUnits = $data['creditUnits'];
+        
+      
+        $stmt = $this->select("UPDATE `rpd` SET `goals`='$goals',`tasks`='$tasks',`objectives`='$objectives', `hours`='$hours',`creditUnits`='$creditUnits' WHERE `ID`='$id_rpd'");
+        
+        // Проверяем количество затронутых строк
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $rowCount = $stmt->rowCount();
+
+        return "Rpd updated successfully" ;
+    }
+    public function getCountRazdel($id_rpd)
+    {
+        $stmt = $this->select("SELECT COUNT(`id_rpd`),  `id_rpd` FROM `dics_razdels` WHERE `id_rpd`=$id_rpd");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
+
+    public function updateRazdel($id_rpd)
+    {
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
+
+        
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+        
+        
+        $id_razdel = $data['id'];
+        $razdel_name = $data['discSection'];
+        $hours_lec = $data['lectureHours'];
+        $hours_sem = $data['semHours'];
+        $hours_lab = $data['labHours'];
+        $hours_krp = $data['contactHours'];
+        $hours_samost = $data['selfHours'];
+
+          
+        $stmt = $this->select("UPDATE `dics_razdels` SET `id_rpd`='$id_rpd',`id_razdel`='$id_razdel', `razdel_name`='$razdel_name', 
+    `hours_lec`='$hours_lec', `hours_sem`='$hours_sem', `hours_lab`='$hours_lab', `hours_krp`='$hours_krp', `hours_samost`='$hours_samost' WHERE `id_rpd`='$id_rpd'");
+
+        // Проверяем количество затронутых строк
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $rowCount = $stmt->rowCount();
+
+        return "Rpd updated successfully" ;
+    }
+
+
+    public function addRazdel($id_rpd)
+    {
+        $jsonString = file_get_contents("php://input");
+        if (empty($jsonString)) {
+            return "No data received";
+        }
+
+        $data  = json_decode(file_get_contents("php://input"), true, 512, JSON_THROW_ON_ERROR);
+        
+        $discSections = $data['discSections'];
+
+
+        foreach ($discSections as $section) { //Выводит только первый раздел, необходимо пофиксить на стороне фронта
+            $id_razdel = $section['id'];
+            $razdel_name = $section['discSection'];
+            $hours_lec = $section['lectureHours'];
+            $hours_sem = $section['semHours'];
+            $hours_lab = $section['labHours'];
+            $hours_krp = $section['contactHours'];
+            $hours_samost = $section['selfHours'];
+        
+            // Далее можно использовать полученные значения
+            // Пример использования значений
+            echo $id_razdel;
+            echo $razdel_name;
+            echo $hours_lec;
+            echo $hours_sem;
+            echo $hours_lab;
+            echo $hours_krp;
+            echo $hours_samost;
+
+            $stmt = $this->select("INSERT INTO `dics_razdels`(`id`, `id_rpd`, `id_razdel`, `razdel_name`, `hours_lec`, `hours_sem`, `hours_lab`, `hours_krp`, `hours_samost`) 
+        VALUES (NULL, '$id_rpd', '$id_razdel', '$razdel_name', '$hours_lec', '$hours_sem', '$hours_lab', '$hours_krp', '$hours_samost')");
+        
+            // Проверяем количество затронутых строк
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->execute();
+            $rowCount = $stmt->rowCount();
+    
+            return "Rpd updated successfully" ;
+
+        }
+    }
+
+    /**
+     * @param $id
+     * @return false|string
+     */
+    public function getDetail($rpdName)
+    {
+        $stmt = $this->select("SELECT * FROM `DETAIL` WHERE `rpdName`='$rpdName'");
+        $stmt->execute();
+        $row_count = $stmt->rowCount();
+    
+        if ($row_count === 0) {
             $res = [
                 "status" => false,
-                "message" => "Descipline not found"
+                "message" => $rpdName
             ];
             return json_encode($res);
-        }else{
-            $stmt->execute();
+        } else {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return json_encode($results);
         }
     }
+
 
 
     /**

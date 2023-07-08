@@ -17,38 +17,30 @@ import { Box, Button, IconButton, TableSortLabel } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import { mockWorkRowData } from "./mockWorkData";
-//import { mockRpd } from "./MockObject";
-// import educData from "./educData.json"
 import DialogMenu from "../../components/DialogMenu";
 import { useNavigate } from "react-router-dom";
 
 import "./workingProgramms-page.css";
+import  postData from "../postData.js";
 
-// Example POST method implementation:
-async function postData(url = "") {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-
-  });
-  return Promise.resolve(response.json()); // parses JSON response into native JavaScript objects
-}
 
 const WorkingProgramms: React.FC = () => {
   const [mockRpd, setMockRpd] = useState<any[]>([]);
 
   useEffect(() => {
-    postData("http://localhost/summerpractic/konstructor/api/getRpd")
-      .then((data) => {
-        setMockRpd(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-        // Обработка ошибки
-      });
+    fetchData();
   }, []);
+
+  async function fetchData() {
+    try {
+      const data = await postData("http://localhost/summerpractic/konstructor/api/getAllRpd", "GET");
+      //console.log(data);
+      setMockRpd(data);
+      
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  }
 
   type TrowData = {
     ID: string;
@@ -56,6 +48,9 @@ const WorkingProgramms: React.FC = () => {
     code: string;
     educLvl: string;
     authors: string;
+    educForm: string;
+    semester: string;
+    course: string
   };
   
   
@@ -99,8 +94,7 @@ const WorkingProgramms: React.FC = () => {
   };
   
   const modifiedMockRpd = mockRpd.map((item) => {
-    const { ID, rpdName, code, educLvl, surname, name, fName } = item;
-  
+    const { ID, rpdName, code, educLvl, surname, name, fName,educForm, semester, course } = item;
     const authors = `${surname} ${name} ${fName}`;
   
     return {
@@ -109,6 +103,9 @@ const WorkingProgramms: React.FC = () => {
       code,
       educLvl,
       authors,
+      educForm,
+      semester,
+      course
     };
   });
 
@@ -168,10 +165,16 @@ const WorkingProgramms: React.FC = () => {
   };
 
   const handleRpdEdit = (id: string) => {
-    const targetRpd = mockRpd.find((rpd: any) => rpd.ID === id);
-    navigate("/constructor", { state: { formValues: targetRpd } });
+    const targetRpd = mockRpd.find((rpd: any) => String(rpd.ID) === id);
+    const targetRpdObject = Object.create(Object.prototype, Object.getOwnPropertyDescriptors(targetRpd));
+    //console.log("targetRpdObject " + targetRpdObject);
+    if (targetRpd) {
+      navigate("/constructor", { state: { formValues: targetRpdObject }});
+    } else {
+      console.log(`Rpd with ID ${id} not found in mockRpd.`);
+    }
   };
-
+  
   const [selectedRpdName, setSelectedRpdName] = useState({
     rpdName: "",
     ID: "",
@@ -233,6 +236,47 @@ const WorkingProgramms: React.FC = () => {
                         Уровень образования
                       </TableSortLabel>
                     </TableCell>
+                    <TableCell key="educForm">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "educForm"}
+                        direction={
+                          orderBy === "educForm" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "educForm")}
+                      >
+                        Форма
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    
+                    <TableCell key="course">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "course"}
+                        direction={
+                          orderBy === "course" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "course")}
+                      >
+                        № курса
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    <TableCell key="semester">
+                      <TableSortLabel
+                        style={{ color: "white" }}
+                        active={orderBy === "semester"}
+                        direction={
+                          orderBy === "semester" ? orderDirection : "asc"
+                        }
+                        onClick={(event) => handleRequestSort(event, "semester")}
+                      >
+                        № семестра
+                      </TableSortLabel>
+                      
+                    </TableCell>
+                    
                     <TableCell key="authors">
                       <TableSortLabel
                         style={{ color: "white" }}
@@ -259,6 +303,10 @@ const WorkingProgramms: React.FC = () => {
                       <TableCell>{row.code}</TableCell>
                       <TableCell>{row.rpdName}</TableCell>
                       <TableCell>{row.educLvl}</TableCell>
+                      <TableCell>{row.educForm} </TableCell>
+                      <TableCell>{row.course} </TableCell>
+                      <TableCell>{row.semester} </TableCell>
+                      
                       <TableCell>{row.authors} </TableCell>
                       <TableCell>
                         <IconButton

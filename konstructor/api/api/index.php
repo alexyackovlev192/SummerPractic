@@ -38,6 +38,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $type = $params[0];
 @$id = (int)$params[1]; ///  можно ????
+@$rpdName = $_GET['rpdName'];
+@$id_rpd = $_GET['id_rpd'];
 
 $doc = new Document();
 $post = new Model\PostsModel();
@@ -56,14 +58,25 @@ if ($method === 'GET') {
     }
     //ОТПРАВКА С СЕРВЕРА ПОЛЯ ВЫБРАННОЙ ДЕСЦИПЛИНЫ
     if ($type === 'getDetail') {
+        if(isset($rpdName)){
+            echo $post->getDetail($rpdName);
+        }
+    }
+    if ($type === 'getAllEducDirection') {
         if(isset($id)){
-            echo $post->getDetail($id);
+            echo $post->getAllEducDirection($id);
         }
     }
     //ОТПРАВКА С СЕРВЕРА ВСЕХ ДИСЦИПЛИН
     if ($type === 'getAllDetail') {
         if(isset($id)){
             echo $post->getAllDetail($id);
+        }
+    }
+    //ОТПРАВКА С СЕРВЕРА ДИСЦИПЛИН с именем $rpdName 
+    if ($type === 'getDetailByrpdName') {
+        if(isset($id)){
+            echo $post->getDetailByrpdName($id);
         }
     }
     //ОТПРАВКА С СЕРВЕРА СПИСОК РПД
@@ -89,7 +102,7 @@ if ($method === 'GET') {
         }
     }
 
-    //ОТПРАВКА С СЕРВЕРА СПИСОК СВЗЯЕЙ
+    //ОТПРАВКА С СЕРВЕРА СПИСОК СВЯЗЕЙ
     if ($type === 'getConnections') {
         echo $post->getConnections();
     }
@@ -101,6 +114,12 @@ if ($method === 'GET') {
 
     }
 
+    //ОТПРАВКА С СЕРВЕРА РАЗДЕЛОВ
+    if ($type === 'getCountRazdel') {
+        if(isset($id)){
+            echo $post->getCountRazdel($id);
+        }
+    }
 
 } elseif ($method === 'POST') {
     //ОТПРАВКА НА СЕРВЕР ФАЙЛА
@@ -114,7 +133,7 @@ if ($method === 'GET') {
         echo "\n ================= \n";
         echo $doc->insertData(); // заполняет в DETAIL / DISCIPLINES / DOCUMENTS / CURS_SEMESTR
         echo "\n ================= \n";
-        echo $post->createRpd();
+        echo $post->createRpd(); // Создание рпд
         echo "\n ================= \n";
     }
     //СОЗДАНИЕ РПД
@@ -141,6 +160,12 @@ if ($method === 'GET') {
         echo $post->addInList();
 
     }
+    //СОЗДАТЬ РАЗДЕЛ
+    if ($type === 'addRazdel') {
+        if(isset($id_rpd)){
+            echo $post->addRazdel($id_rpd);
+        }
+    }
 } elseif ($method === 'PATCH') {
 
     //ОБНОВЛЕНИЕ ЮЗЕРОВ ДАННЫХ В ТАБЛИЦЕ USERS
@@ -150,10 +175,24 @@ if ($method === 'GET') {
         }
     }
 
+    //ОБНОВЛЕНИЕ РАЗДЕЛОВ ДИСЦИПЛИН 
+    if ($type === 'updateRazdel') {
+        if(isset($id_rpd)){
+            echo $post->updateRazdel($id_rpd);
+        }
+    }
+
     //ОБНОВЛЯЕТ СВЯЗИ В ТАБЛИЦЕ DISP_USERS_CON
     if ($type === 'updateConnection') {
         if(isset($id)){
             echo $post->updateConnection($id);
+        }
+    }
+    
+    //ОБНОВЛЯЕТ ПОЛЯ В ТАБЛИЦЕ RPD 
+    if ($type === 'updateRpd') {
+        if(isset($id_rpd)){
+            echo $post->updateRpd($id_rpd);
         }
     }
 

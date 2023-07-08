@@ -38,7 +38,7 @@ export function DiscContentForm({
 
   const addDiscSection = () => {
     const newDiscSection: TDiscContent = {
-      id: Date.now(),
+      id: idNum,
       discSection: "",
       lectureHours: "",
       semHours: "",
@@ -93,6 +93,7 @@ export function DiscContentForm({
         contactHours = "",
         selfHours = "",
       } = fieldValuesForSection;
+
       totalHours +=
         Number(lectureHours) +
         Number(semHours) +
@@ -104,20 +105,22 @@ export function DiscContentForm({
   };
 
   const totalHours = countTotalHours();
-  console.log(totalHours);
-  console.log(hours);
+  console.log(parseInt(hours));
 
   return (
     <div style={{ width: "95%" }}>
       <FormWrapper title="Разделы дисциплины">
         <Box display="flex" flexDirection="column" alignItems="center">
-          {buttonChecker && parseInt(hours) != totalHours && (
-            <Alert severity="warning">Колличество часов не сходится</Alert>
+          {buttonChecker && parseInt(hours) !== totalHours && (
+            <Alert severity="warning">Количество часов не сходится.</Alert>
           )}
           <Button onClick={addDiscSection}>Добавить раздел</Button>
+          <Typography sx={{ paddingTop: "16px", paddingBottom: "16px", fontWeight: "bold" }} variant="body2">
+            Общее количество часов на дисциплину: {hours}
+          </Typography>
           {discContentArray.map((discSection) => (
             <div key={discSection.id}>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", textAlign: "center" }}>
                 <div style={{ width: "100%" }}>
                   <Typography variant="body2" className="inputTypo">
                     Раздел {discNum()}
@@ -136,6 +139,7 @@ export function DiscContentForm({
                     style={{ width: "100%" }}
                   />
                 </div>
+                
                 <div style={{ width: "20%" }}>
                   <Typography variant="body2" className="inputTypo">
                     Часов на лекции:
@@ -150,7 +154,11 @@ export function DiscContentForm({
                       discSection.id,
                       "lectureHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -167,7 +175,11 @@ export function DiscContentForm({
                       discSection.id,
                       "semHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -184,7 +196,11 @@ export function DiscContentForm({
                       discSection.id,
                       "labHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -201,7 +217,11 @@ export function DiscContentForm({
                       discSection.id,
                       "contactHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                   }}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -218,14 +238,19 @@ export function DiscContentForm({
                       discSection.id,
                       "selfHours"
                     )}
-                    style={{ width: "20%" }}
+                    style={{ 
+                      width: "35%",
+                      margin: 0,
+                      textAlign: "center"
+                      
+                   }}
                   />
                 </div>
               </div>
             </div>
           ))}
-          <Typography sx={{ paddingTop: "16px" }} variant="body2">
-            Общее колличество введенных часов: {totalHours}
+          <Typography sx={{ paddingTop: "16px", fontWeight: "bold" }} variant="body2">
+            Общее количество введенных часов: {totalHours}
           </Typography>
         </Box>
       </FormWrapper>
