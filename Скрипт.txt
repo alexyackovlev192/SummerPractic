@@ -1,0 +1,260 @@
+CREATE TABLE `CURS_SEMESTR` (
+  `ID` int(11) NOT NULL,
+  `DOC_ID` int(11) NOT NULL,
+  `ID_D` int(11) NOT NULL,
+  `CURS` text NOT NULL,
+  `SEMESTR` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `DESCIPLINS` (
+  `ID` int(10) NOT NULL,
+  `NAME` text NOT NULL,
+  `D_ID` int(11) NOT NULL,
+  `DETAIL_ID` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `DETAIL` (
+  `ID` int(11) NOT NULL,
+  `DES_ID` int(11) NOT NULL,
+  `kod` text NOT NULL,
+  `rpdName` text NOT NULL,
+  `direction` text NOT NULL,
+  `code` text NOT NULL,
+  `educLvl` text NOT NULL,
+  `educForm` text,
+  `year` text NOT NULL,
+  `hours` text NOT NULL,
+  `creditUnits` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `DISP_USERS_CON` (
+  `ID` int(11) NOT NULL,
+  `ID_USER` int(11) NOT NULL,
+  `ID_DISCP` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `DOCUMENTS` (
+  `ID` int(10) NOT NULL,
+  `D_ID` int(11) NOT NULL,
+  `DOC_ID` int(11) NOT NULL,
+  `NAME` text NOT NULL,
+  `YEAR` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `listSoglTable` (
+  `id` int(11) NOT NULL,
+  `rasmotr` text NOT NULL,
+  `protocolNumber` text NOT NULL,
+  `surName` text NOT NULL,
+  `firstName` text NOT NULL,
+  `lastName` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `RPD` (
+  `ID` int(11) NOT NULL,
+  `USER` int(11) NOT NULL,
+  `STATUS` text NOT NULL,
+  `rpdName` text NOT NULL,
+  `direction` text NOT NULL,
+  `code` text NOT NULL,
+  `educLvl` text NOT NULL,
+  `educForm` text NOT NULL,
+  `year` int(11) NOT NULL,
+  `protocol` text NOT NULL,
+  `date` text NOT NULL,
+  `surname` text NOT NULL,
+  `name` text NOT NULL,
+  `fName` text NOT NULL,
+  `goals` text NOT NULL,
+  `tasks` text NOT NULL,
+  `objectives` text NOT NULL,
+  `disciplinePlace` text NOT NULL,
+  `semester` int(3) NOT NULL,
+  `course` text NOT NULL,
+  `competencies` json NOT NULL,
+  `hours` text NOT NULL,
+  `creditUnits` int(255) NOT NULL,
+  `sectionsTopics` text NOT NULL,
+  `smthElse` text NOT NULL,
+  `supportList` text NOT NULL,
+  `fundList` text NOT NULL,
+  `literatureList` text NOT NULL,
+  `periodicalsList` text NOT NULL,
+  `internetResList` text NOT NULL,
+  `infoTechResList` text NOT NULL,
+  `profDataInfList` text NOT NULL,
+  `reqSoftwareList` text NOT NULL,
+  `TReqLogistics` json NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `USERS` (
+  `ID` int(11) NOT NULL,
+  `RPD_ID` int(11) NOT NULL,
+  `NAME` text NOT NULL,
+  `LOGIN` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+Create Table `dics_razdels` (
+	`id` int(11) PRIMARY KEY,
+	`id_rpd` int(11),
+	`id_razdel` int(11),
+	`razdel_name` varchar(100),
+	`hours_lec` int(5),
+	`hours_sem` int(5),
+	`hours_lab` int(5),
+	`hours_krp` int(5),
+	`hours_samost` int(5)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `CURS_SEMESTR`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `DOC_ID` (`DOC_ID`);
+
+--
+-- Индексы таблицы `DESCIPLINS`
+--
+ALTER TABLE `DESCIPLINS`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `D_ID` (`D_ID`),
+  ADD KEY `DETAIL_ID` (`DETAIL_ID`);
+
+--
+-- Индексы таблицы `DETAIL`
+--
+ALTER TABLE `DETAIL`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `DES_ID` (`DES_ID`);
+
+--
+-- Индексы таблицы `DISP_USERS_CON`
+--
+ALTER TABLE `DISP_USERS_CON`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_USER` (`ID_USER`),
+  ADD KEY `ID_DISCP` (`ID_DISCP`);
+
+--
+-- Индексы таблицы `DOCUMENTS`
+--
+ALTER TABLE `DOCUMENTS`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `D_ID` (`D_ID`),
+  ADD KEY `ID_FOR_CS` (`DOC_ID`);
+
+--
+-- Индексы таблицы `listSoglTable`
+--
+ALTER TABLE `listSoglTable`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `RPD`
+--
+ALTER TABLE `RPD`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Индексы таблицы `USERS`
+--
+ALTER TABLE `USERS`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `RPD_ID` (`RPD_ID`);
+
+
+Alter Table `dics_razdels`
+Add Constraint dr_RPD_FK
+Foreign key (`id_rpd`)
+References RPD(`ID`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `CURS_SEMESTR`
+--
+ALTER TABLE `CURS_SEMESTR`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2094;
+
+--
+-- AUTO_INCREMENT для таблицы `DESCIPLINS`
+--
+ALTER TABLE `DESCIPLINS`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1395;
+
+--
+-- AUTO_INCREMENT для таблицы `DETAIL`
+--
+ALTER TABLE `DETAIL`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1300;
+
+--
+-- AUTO_INCREMENT для таблицы `DISP_USERS_CON`
+--
+ALTER TABLE `DISP_USERS_CON`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT для таблицы `DOCUMENTS`
+--
+ALTER TABLE `DOCUMENTS`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT для таблицы `listSoglTable`
+--
+ALTER TABLE `listSoglTable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `RPD`
+--
+ALTER TABLE `RPD`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT для таблицы `USERS`
+--
+ALTER TABLE `USERS`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `dics_razdels`
+--
+ALTER TABLE `dics_razdels`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `CURS_SEMESTR`
+--
+ALTER TABLE `CURS_SEMESTR`
+  ADD CONSTRAINT `curs_semestr_ibfk_1` FOREIGN KEY (`DOC_ID`) REFERENCES `DOCUMENTS` (`DOC_ID`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `DESCIPLINS`
+--
+ALTER TABLE `DESCIPLINS`
+  ADD CONSTRAINT `desciplins_ibfk_2` FOREIGN KEY (`D_ID`) REFERENCES `DOCUMENTS` (`D_ID`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `DETAIL`
+--
+ALTER TABLE `DETAIL`
+  ADD CONSTRAINT `detail_ibfk_1` FOREIGN KEY (`DES_ID`) REFERENCES `DESCIPLINS` (`DETAIL_ID`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `DISP_USERS_CON`
+--
+ALTER TABLE `DISP_USERS_CON`
+  ADD CONSTRAINT `disp_users_con_ibfk_1` FOREIGN KEY (`ID_USER`) REFERENCES `USERS` (`ID`),
+  ADD CONSTRAINT `disp_users_con_ibfk_2` FOREIGN KEY (`ID_DISCP`) REFERENCES `DESCIPLINS` (`ID`);
+
